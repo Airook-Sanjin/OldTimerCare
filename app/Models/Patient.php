@@ -10,7 +10,8 @@ class Patient extends Model
 {
     use HasFactory;
 
-    protected $fillable =['PatientID', 'UserID','DoctorID','CaregiverID','Total'];
+    protected $fillable =['UserID','DoctorID','CaregiverID',
+                        'Total'];
 
     public function User(){
         return $this->belongsTo(User::class);

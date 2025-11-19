@@ -9,7 +9,7 @@ use App\Models\User;
 class Employee extends Model
 {
     use HasFactory;
-    protected $fillable =["EmployeeID",'UserID', 'RoleID', 'HireDate'];
+    protected $fillable =['EmployeeID','UserID','RoleID','HireDate'];
 
     public function User(){
         return $this->belongsTo(User::class);
