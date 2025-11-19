@@ -11,11 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Family_members', function (Blueprint $table) {
-            $table->id('FamilyMemberID');
-            $table->foreignid('PatientID');
-            $table->foreignId('UserID');
-            $table->enum('Relationship',['Partner','Son','Daughter','Brother','Sister','Niece','Nephew']);
+        Schema::create('FamilyMembers', function (Blueprint $table) {
+             $table->id('FamilyMemberID');
+            $table->unsignedBigInteger('UserID');
+            $table->unsignedBigInteger('PatientID');
+
+            $table->enum('Relationship', [
+                'Spouse','Son','Daughter',
+                'Brother','Sister','Niece',
+                'Nephew','Friend'
+            ]);
+            $table->timestamps();
+            $table->foreign('UserID')->references('UserID')->on('Users');
+            $table->foreign('PatientID')->references('PatientID')->on('Patient');
         });
     }
 

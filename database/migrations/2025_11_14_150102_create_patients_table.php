@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Patients', function (Blueprint $table) {
-            $table->id('PatientID');
-            $table->foreignId('UserID');
-            $table->foreignId('DoctorID');
-            $table->foreignId('CaregiverID');
-            $table->double('Total',10,2);
+        Schema::create('Patient', function (Blueprint $table) {
+              $table->id('PatientID');
+            $table->unsignedBigInteger('UserID');
+            $table->unsignedBigInteger('DoctorID');
+            $table->unsignedBigInteger('CaregiverID');
+            $table->decimal('Total', 10, 2)->default(0);
+            $table->timestamps();
+            $table->foreign('UserID')->references('UserID')->on('Users');
+            $table->foreign('DoctorID')->references('EmployeeID')->on('Employee');
+            $table->foreign('CaregiverID')->references('EmployeeID')->on('Employee');
         });
     }
 
