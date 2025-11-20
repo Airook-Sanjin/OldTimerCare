@@ -1,0 +1,14 @@
+
+.container{
+    width:100vw;
+
+}
+.nav{
+    display: flex;
+    flex-direction: column;
+}
+.Appointment{
+    height:20vh;
+    width:20vh;
+    border: 10px solid black;
+}
