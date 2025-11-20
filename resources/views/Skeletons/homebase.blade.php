@@ -1,4 +1,4 @@
-@extends('Header&Footer')
+@extends('Skeletons/Header&Footer')
 @section('title','Home')
 
 @section('styles')
