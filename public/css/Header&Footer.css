@@ -1,0 +1,20 @@
+
+
+.nav{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width:100%;
+}
+.navbar-nav{
+    width:15vw;
+    display: flex;
+    flex-direction: row;
+     gap:40px;
+}
+.nav-brand{
+    display: flex;
+    align-items: center;
+}

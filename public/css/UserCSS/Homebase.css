@@ -1,0 +1,52 @@
+.Dashboard{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:.5rem;
+}
+.Column{
+width: 40vw;
+height: 90vh;
+font-family: Arial;
+font-size: 15px;
+font-weight: 400;
+text-align: center;
+text-transform: none;
+/* color: #000000; */
+border: 1px solid black;
+border-radius: 61px;
+}
+
+.Middle-dash{
+    display:flex;
+    flex-direction: column;
+    gap:.5rem;
+}
+
+.Middle{
+    height: 44vh;
+    width: 60vw;
+    font-family: Arial;
+    font-size: 15.0px;
+    font-weight: 400;
+    /* text-align: center; */
+    /* text-transform: none; */
+    /* color: #000000; */
+    /* background-color: #FFFFFF; */
+    border: 1.0px solid #000000;
+    border-radius: 61px;
+}
+
+.Right{
+    width: 264px;
+    height: 543px;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: none;
+    /* color: #000000; */
+    border: 1px solid black;
+    border-radius: 61px;
+
+}
