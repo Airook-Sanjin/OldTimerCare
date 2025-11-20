@@ -14,7 +14,7 @@ text-align: center;
 text-transform: none;
 /* color: #000000; */
 border: 1px solid black;
-border-radius: 61px;
+border-radius: 20px;
 }
 
 .Middle-dash{
@@ -34,7 +34,7 @@ border-radius: 61px;
     /* color: #000000; */
     /* background-color: #FFFFFF; */
     border: 1.0px solid #000000;
-    border-radius: 61px;
+    border-radius: 20px;
 }
 
 .Right{
