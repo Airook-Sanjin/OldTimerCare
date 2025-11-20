@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FamilyMember;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class FamilyMemberController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class FamilyMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FamilyMember $familyMember)
+    public function show(Employee $employee)
     {
         //
     }
@@ -42,7 +42,7 @@ class FamilyMemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(FamilyMember $familyMember)
+    public function edit(Employee $employee)
     {
         //
     }
@@ -50,7 +50,7 @@ class FamilyMemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, FamilyMember $familyMember)
+    public function update(Request $request, Employee $employee)
     {
         //
     }
@@ -58,7 +58,7 @@ class FamilyMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FamilyMember $familyMember)
+    public function destroy(Employee $employee)
     {
         //
     }
