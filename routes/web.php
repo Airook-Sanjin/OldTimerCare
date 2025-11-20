@@ -15,7 +15,7 @@ use App\Http\Controllers\FamilyMemberController;
 */
 
 Route::get('/', function () {
-    return view('Users\homebase');
+    return view('Skeletons\homebase');
 });
 
 // Family member
