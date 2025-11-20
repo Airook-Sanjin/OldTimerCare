@@ -9,38 +9,29 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('FamilyMember', function (Blueprint $table) {
-            $table->id('FamilyMemberID');
+             $table->id('FamilyMemberID');
             $table->unsignedBigInteger('UserID');
             $table->unsignedBigInteger('PatientID');
 
             $table->enum('Relationship', [
-                'Spouse',
-                'Son',
-                'Daughter',
-                'Brother',
-                'Sister',
-                'Niece',
-                'Nephew',
-                'Friend'
+                'Spouse','Son','Daughter',
+                'Brother','Sister','Niece',
+                'Nephew','Friend'
             ]);
-
             $table->timestamps();
-
             $table->foreign('UserID')->references('UserID')->on('Users');
             $table->foreign('PatientID')->references('PatientID')->on('Patient');
         });
     }
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('family_member');
+        Schema::dropIfExists('Family_member');
     }
 };
