@@ -3,19 +3,37 @@
 @section('title','FamilyHome')
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/UserCSS/Homebase.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('app/resources/family/family.css') }}"> --}}
 @endsection
-
 
     @section('Left-Column')
         <p>LEFT</p>
     @endsection
 
     @section('Middle-Top')
-        <p>Top</p>
+        <div class="container-div">
+            <h2 class="container-title">Daily Checklist</h2>
+            <div class="container-checklist">
+                <ul>
+                    <li class="box">s</li>
+                    <li class="box">ss</li>
+                    <li class="box">sss</li>
+                </ul>
+            </div>
+        </div>
     @endsection
 
     @section('Middle-Bottom')
-        <p>Bottom</p>
+         <div class="container-div">
+            <h2 class="container-title">Medicine</h2>
+            <div class="container-checklist">
+                <ul>
+                    <li class="box">s</li>
+                    <li class="box">ss</li>
+                    <li class="box">sss</li>
+                </ul>
+            </div>
+        </div>
     @endsection
 
     @section('Right-Column')
