@@ -1,5 +1,5 @@
 <?php
-
+// This is what we where we want to handle user creation
 namespace App\Http\Controllers;
 
 use App\Models\Users;

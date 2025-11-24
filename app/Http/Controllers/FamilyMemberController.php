@@ -36,7 +36,7 @@ class FamilyMemberController extends Controller
      */
      public function home()
     {
-        return view('family.home');
+        return view('Users.family.home');
     }
 
     /**
