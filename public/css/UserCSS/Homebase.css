@@ -1,12 +1,13 @@
 .Dashboard{
     display:flex;
+    height:70vh;
     flex-direction: row;
     justify-content: center;
     gap:.5rem;
 }
 .Column{
 width: 40vw;
-height: 90vh;
+height: 100%;
 font-family: Arial;
 font-size: 15px;
 font-weight: 400;
@@ -19,13 +20,14 @@ border-radius: 20px;
 
 .Middle-dash{
     display:flex;
+    height: 100%;
     flex-direction: column;
     gap:.5rem;
 }
 
 .Middle{
     height: 44vh;
-    width: 60vw;
+    width: 50vw;
     font-family: Arial;
     font-size: 15.0px;
     font-weight: 400;
