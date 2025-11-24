@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 // Frick dude
 // Family member
-Route::get('/Users/family/home', [FamilyMemberController::class, 'home']);
+Route::get('/family/home', [FamilyMemberController::class, 'home']);
 
 
 // Login + Logout
