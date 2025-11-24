@@ -21,7 +21,7 @@ use App\Http\Controllers\AdminApprovalController;
 Route::get('/', function () {
     return view('Skeletons.homebase');
 });
-// Frick dude
+
 // Family member
 Route::get('/family/home', [FamilyMemberController::class, 'home']);
 
