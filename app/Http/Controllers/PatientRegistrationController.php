@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class PatientRegisterController extends Controller
+class PatientRegistrationController extends Controller
 {
     public function showForm() 
     {
-        return view('auth.patient_register');
+        return view('Users.auth.patientRegistration');
     }
 
     public function register(Request $request) 

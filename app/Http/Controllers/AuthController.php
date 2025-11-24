@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
     public function showLogin() {
-        return view('auth.login');
+        return view('Users.auth.login');
     }
 
     public function login(Request $request) 

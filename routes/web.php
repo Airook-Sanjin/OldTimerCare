@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PatientRegistrationController;
 use App\Http\Controllers\FamilyRegistrationController;
 use App\Http\Controllers\AdminApprovalController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +19,7 @@ use App\Http\Controllers\AdminApprovalController;
 */
 
 Route::get('/', function () {
-    return view('Users\homebase');
+    return view('Skeletons.homebase');
 });
 
 // Family member
