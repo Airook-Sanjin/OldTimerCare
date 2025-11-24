@@ -15,22 +15,52 @@
             <h2 class="container-title">Daily Checklist</h2>
             <div class="container-checklist">
                 <ul>
-                    <li class="box">s</li>
-                    <li class="box">ss</li>
-                    <li class="box">sss</li>
+                    <li class="box"> 
+                        <div>
+                            <span>Breakfast</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
+                    <li class="box"> 
+                        <div>
+                            <span>Lunch</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
+                    <li class="box"> 
+                        <div>
+                            <span>Dinner</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
                 </ul>
             </div>
         </div>
     @endsection
 
     @section('Middle-Bottom')
-         <div class="container-div">
+        <div class="container-div">
             <h2 class="container-title">Medicine</h2>
             <div class="container-checklist">
                 <ul>
-                    <li class="box">s</li>
-                    <li class="box">ss</li>
-                    <li class="box">sss</li>
+                    <li class="box"> 
+                        <div>
+                            <span>Breakfast</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
+                    <li class="box"> 
+                        <div>
+                            <span>Lunch</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
+                    <li class="box"> 
+                        <div>
+                            <span>Dinner</span>
+                            <input type="checkbox">
+                        </div>                       
+                    </li>
                 </ul>
             </div>
         </div>

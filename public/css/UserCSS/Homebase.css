@@ -66,7 +66,7 @@ border-radius: 20px;
 
 }
 .container-checklist{
-    width: 100%;
+    width: 80%;
     height: 70%;
     /* background-color: red; */
     display: flex;
@@ -82,7 +82,15 @@ border-radius: 20px;
 }
 .box{
     width: 20%;
-    height: 100px;
+    height: 90px;
     border: 1px solid black;
     border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.box div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
