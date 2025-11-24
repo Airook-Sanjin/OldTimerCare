@@ -1,0 +1,97 @@
+.Dashboard{
+    display:flex;
+    height:100%;
+    flex-direction: row;
+    justify-content: center;
+    gap:.5rem;
+}
+.Column{
+
+width: 40vw;
+
+font-family: Arial;
+font-size: 15px;
+font-weight: 400;
+text-align: center;
+text-transform: none;
+/* color: #000000; */
+border: 1px solid black;
+border-radius: 20px;
+}
+
+.Middle-dash{
+    display:flex;
+    height: 100%;
+    flex-direction: column;
+    gap:.5rem;
+}
+
+.Middle{
+    height: 44vh;
+    width: 50vw;
+    font-family: Arial;
+    font-size: 15.0px;
+    font-weight: 400;
+    /* text-align: center; */
+    /* text-transform: none; */
+    /* color: #000000; */
+    /* background-color: #FFFFFF; */
+    border: 1.0px solid #000000;
+    border-radius: 20px;
+}
+
+.Right{
+    width: 264px;
+    height: 543px;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: none;
+    /* color: #000000; */
+    border: 1px solid black;
+    border-radius: 61px;
+
+}
+
+/* top and bottom layout */
+.container-div{
+    width: 100%;
+    height: 44vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* background-color: aqua; */
+}
+.container-title{
+
+}
+.container-checklist{
+    width: 80%;
+    height: 70%;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.container-checklist ul{
+   padding-left: 0%;
+   list-style: none;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+}
+.box{
+    width: 20%;
+    height: 90px;
+    border: 1px solid black;
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.box div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
