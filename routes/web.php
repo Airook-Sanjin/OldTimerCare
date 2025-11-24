@@ -19,5 +19,5 @@ Route::get('/', function () {
 });
 
 // Family member
-Route::get('/family/home', [FamilyMemberController::class, 'home']);
+Route::get('/Users/family/home', [FamilyMemberController::class, 'home']);
 

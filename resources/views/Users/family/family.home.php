@@ -24,16 +24,32 @@
     @endsection
 
     @section('Middle-Bottom')
-         <div class="container-div">
-            <h2 class="container-title">Medicine</h2>
-            <div class="container-checklist">
-                <ul>
-                    <li class="box">s</li>
-                    <li class="box">ss</li>
-                    <li class="box">sss</li>
-                </ul>
-            </div>
-        </div>
+        <div class="container-div">
+  <h2 class="container-title">Medicine</h2>
+  <div class="container-checklist">
+    <ul>
+      <li>
+        <label class="box">
+          <input type="checkbox">
+          <span>s</span>
+        </label>
+      </li>
+      <li>
+        <label class="box">
+          <input type="checkbox">
+          <span>ss</span>
+        </label>
+      </li>
+      <li>
+        <label class="box">
+          <input type="checkbox">
+          <span>sss</span>
+        </label>
+      </li>
+    </ul>
+  </div>
+</div>
+
     @endsection
 
     @section('Right-Column')
