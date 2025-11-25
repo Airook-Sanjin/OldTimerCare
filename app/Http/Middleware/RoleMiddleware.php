@@ -15,6 +15,9 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        log::info()
+
+
         return $next($request);
     }
 }
