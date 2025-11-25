@@ -1,14 +1,28 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PatientRegistrationController;
-use App\Http\Controllers\FamilyRegistrationController;
-use App\Http\Controllers\AdminApprovalController;
+use App\Http\Controllers\FamilyMemberController;
+use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\Authentication\PatientRegistrationController;
+use App\Http\Controllers\Authentication\FamilyRegistrationController;
+use App\Http\Controllers\Authentication\AdminApprovalController;
 
-Route::get('/', function () {
-    return view('Users.homebase');
-});
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/',[Dashboard::class,'Dash']);
+
+// Family member
+Route::get('/family/home', [FamilyMemberController::class, 'home']);
+
 
 // Login + Logout
 Route::get('/login', [AuthController::class, 'showLogin']);

@@ -34,9 +34,9 @@ class FamilyMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FamilyMember $familyMember)
+     public function home()
     {
-        //
+        return view('Users.family.home');
     }
 
     /**

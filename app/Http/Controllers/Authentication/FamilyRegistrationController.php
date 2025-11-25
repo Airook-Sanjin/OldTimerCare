@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class FamilyRegisterController extends Controller
+class FamilyRegistrationController extends Controller
 {
     public function showForm() 
     {
@@ -15,7 +15,7 @@ class FamilyRegisterController extends Controller
             ->select('Patient.PatientID', 'Users.FirstName', 'Users.LastName')
             ->get();
 
-        return view('auth.family_register', compact('patients'));
+        return view('Users.auth.familyRegistration', compact('patients'));
     }
 
     public function register(Request $request) 

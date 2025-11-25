@@ -11,17 +11,15 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
         <!-- Styles -->
-        <link rel="stylesheet" href="resources/css/Header&Footer.css">
+        <link rel="stylesheet" href="{{ asset('css/Header&Footer.css') }}">
         @yield('styles')
     </head>
     <div class ="nav">
-        <div class="container">
-    <a id="BusName"class="navbar-brand" href="/">Lancaster Oaks Residence</a>
-    <ul class="navbar-nav">
-      <li class="nav-item"><a class="nav-link">Home</a></li>
-      <li class="nav-item"><a class="nav-link">Appointment</a></li>
-    </ul>
-</div>
+            <a id="BusName"class="navbar-brand" href="/">Lancaster Oaks Residence</a>
+            <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link">Home</a></li>
+            <li class="nav-item"><a class="nav-link">Appointment</a></li>
+            </ul>
     </div>
     <body class="Main">
         @yield('content')
