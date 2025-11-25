@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FamilyMemberController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PatientRegistrationController;
-use App\Http\Controllers\FamilyRegistrationController;
-use App\Http\Controllers\AdminApprovalController;
+use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\Authentication\PatientRegistrationController;
+use App\Http\Controllers\Authentication\FamilyRegistrationController;
+use App\Http\Controllers\Authentication\AdminApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +18,8 @@ use App\Http\Controllers\AdminApprovalController;
 |
 */
 
-Route::get('/', function () {
-    return view('Skeletons.homebase');
-});
-// Frick dude
+Route::get('/',[Dashboard::class,'Dash']);
+
 // Family member
 Route::get('/family/home', [FamilyMemberController::class, 'home']);
 

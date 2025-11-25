@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Doctors
+class RoleMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,9 @@ class Doctors
      */
     public function handle(Request $request, Closure $next): Response
     {
+        log::info()
+
+
         return $next($request);
     }
 }
