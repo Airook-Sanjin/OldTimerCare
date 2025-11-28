@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Users;
 
 class PatientRegistrationController extends Controller
 {
@@ -25,7 +26,7 @@ class PatientRegistrationController extends Controller
             'DateOfBirth'   => 'nullable|date',
         ]);
 
-        $userID = DB::table('Users')->insertGetId([
+        $user = Users::create([
             'FirstName'   => $request->FirstName,
             'LastName'    => $request->LastName,
             'Email'       => $request->Email,
@@ -33,12 +34,12 @@ class PatientRegistrationController extends Controller
             'Phone'       => $request->Phone,
             'Address'     => $request->Address,
             'DateOfBirth' => $request->DateOfBirth,
-            'created_at'  => now(),
-            'updated_at'  => now()
+            // 'created_at'  => now(), //! I commented these out cause apparently it will give us errors donw the line
+            // 'updated_at'  => now()
         ], 'UserID');
 
         DB::table('Patient')->insert([
-            'UserID'      => $userID,
+            'UserID'      => $user->$UserID,
             'DoctorID'    => null,
             'CaregiverID' => null,
             'Total'       => 0,

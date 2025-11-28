@@ -1,27 +1,43 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Users extends Model
+class Users extends Authenticatable
 {
-    use HasFactory;
-    protected $fillable =['UserID','FirstName','LastName','Email','Phone','Address','Password','DateOfBirth'];
+    use Notifiable;
+
+    protected $table = 'Users';
+    protected $primaryKey = 'UserID';
+    public $timestamps = false; 
+
+    protected $fillable =['FirstName','LastName','Email','Address','Password'];
+    
+  
+
+    protected function setPasswordAttribute($value){
+        $this->attributes['Password'] = Hash::make($value);
+    }
    
-    public function Employee()
+    public function getAuthPassword()
     {
-        return $this->hasOne(Employee::class);
+        return $this->Password;
     }
+    // public $timestamps = true;
+    // public function Employee()
+    // {
+    //     return $this->hasOne(Employee::class);
+    // }
 
-    public function Patient()
-    {
-        return $this->hasOne(Patient::class);
-    }
+    // public function Patient()
+    // {
+    //     return $this->hasOne(Patient::class);
+    // }
 
-    public function FamilyMember()
-    {
-        return $this->hasOne(FamilyMember::class);
-    }
+    // public function FamilyMember()
+    // {
+    //     return $this->hasOne(FamilyMember::class);
+    // }
 }

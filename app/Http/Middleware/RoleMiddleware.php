@@ -15,7 +15,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        log::info()
+        log::info("Before Role");
 
 
         return $next($request);
