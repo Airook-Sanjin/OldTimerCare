@@ -68,6 +68,10 @@
 
     @section('Right-Column')
         <p>Right</p>
+        <img src="{{ $user->ProfileImage }}" alt="Profile Picture" class="pfp">
+        <p>
+            Dr. John dough
+        </p>
     @endsection
 
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Phone', 15)->nullable();
             $table->string('Address', 100)->nullable();
             $table->date('DateOfBirth')->nullable();
+            $table->text('ProfileImage')->nullable(false); // -> nullable(false) == NOT NULL
             // $table->timestamps(); this is what adds the 'created' and updated at
         });
     }
