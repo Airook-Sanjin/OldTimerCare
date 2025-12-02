@@ -54,10 +54,7 @@ class AuthController extends Controller
             Auth::logout();
             return back()->withErrors(['Email' => 'Your family member account is awaiting approval.']);
         }
-        if($isEmployee && !$isEmployee->is_approved){
-            Auth::logout();
-            return back()->withErrors(['Email'=>'Your Employee account is waiting approval']);
-        }
+        
 
         return redirect()->intended(route('dashboard')); 
     }
