@@ -7,15 +7,22 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function adminhome(){
+        $user = auth()->user();
+        return view('Users.Admin.home',compact('user'));
     }
-
-    /**
+    public function supervisorhome(){
+        $user = auth()->user();
+        return view('Users.Supervisor.home',compact('user'));
+    }
+    public function doctorhome(){
+        $user = auth()->user();
+        return view('Users.Doctor.home',compact('user'));
+    }
+    public function caregiverhome(){
+        $user = auth()->user();
+        return view('Users.Caregiver.home',compact('user'));
+    }/**
      * Show the form for creating a new resource.
      */
     public function create()

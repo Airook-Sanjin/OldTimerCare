@@ -10,7 +10,7 @@
 
 <div class="welcome">
     <h1 class="name">
-        Welcome User
+        Welcome {{$user->FirstName}}
     </h1>
 </div>
 <div class="Dashboard">

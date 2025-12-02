@@ -1,11 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\FamilyMemberController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PatientController;
+
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Authentication\PatientRegistrationController;
 use App\Http\Controllers\Authentication\FamilyRegistrationController;
 use App\Http\Controllers\Authentication\AdminApprovalController;
+use App\Models\Users;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,16 +24,40 @@ use App\Http\Controllers\Authentication\AdminApprovalController;
 |
 */
 
-Route::get('/',[Dashboard::class,'Dash']);
+Route::get('/rehash', function () {
+    $users = \App\Models\Users::all();
 
-// Family member
-Route::get('/family/home', [FamilyMemberController::class, 'home']);
+    foreach ($users as $user) {
+        // Directly hash the current plaintext password
+        $user->Password = $user->Password;
+        $user->save();
+    }
 
+    return "All passwords rehashed successfully.";
+});
 
 // Login + Logout
-Route::get('/login', [AuthController::class, 'showLogin']);
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// * User Dashboard Base
+Route::get('/dashboard',[Dashboard::class,'Dash'])->middleware('auth')->name('dashboard');
+
+Route::middleware('auth')->group(function(){
+    Route::get('/admin/home', [EmployeeController::class, 'adminHome'])->name('Admin.home');
+    Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
+    Route::get('/doctor/home', [EmployeeController::class, 'doctorHome'])->name('Doctor.home');
+    Route::get('/caregiver/home', [EmployeeController::class, 'caregiverHome'])->name('Caregiver.home');
+// *family & Patients
+    Route::get('/patient/home', [PatientController::class, 'index'])->name('patient.home');
+    Route::get('/family/home', [FamilyController::class, 'home'])->name('family.home');
+});
+// // Family member
+// Route::get('/family/home', [FamilyMemberController::class, 'home']);
+
+
+
 
 // Registration
 Route::get('/register/patient', [PatientRegistrationController::class, 'showForm'])->name('register.patient');
