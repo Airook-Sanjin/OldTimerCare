@@ -11,8 +11,9 @@ class PatientController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {   
+    $user = auth()->user();
+       return view('Users.family.home'); //
     }
 
     /**
