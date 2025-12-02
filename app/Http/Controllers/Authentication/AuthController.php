@@ -33,14 +33,13 @@ class AuthController extends Controller
     }
 
     // Login successful
-    $request->session()->regenerate(); // Important for security
-
+    $request->session()->regenerate(); //! Important for security
     $user = Auth::user();
 
     // return redirect()->intended('/dashboard');
 
 
-        // Detect role via subtype tables
+        // Detect roles
         $isEmployee = DB::table('Employee')->where('UserID', $user->UserID)->first();
         $isPatient  = DB::table('Patient')->where('UserID', $user->UserID)->first();
         $isFamily   = DB::table('FamilyMember')->where('UserID', $user->UserID)->first();
@@ -49,14 +48,18 @@ class AuthController extends Controller
             Auth::logout();
             return back()->withErrors(['Email' => 'Your patient account is awaiting approval.']);
         }
+        
 
         if ($isFamily && !$isFamily->is_approved) {
             Auth::logout();
             return back()->withErrors(['Email' => 'Your family member account is awaiting approval.']);
         }
+        if($isEmployee && !$isEmployee->is_approved){
+            Auth::logout();
+            return back()->withErrors(['Email'=>'Your Employee account is waiting approval']);
+        }
 
-        
-        return redirect()->intended('/dashboard'); 
+        return redirect()->intended(route('dashboard')); 
     }
 
     public function logout() 

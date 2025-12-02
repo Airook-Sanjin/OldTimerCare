@@ -34,10 +34,10 @@ Route::get('/rehash', function () {
 });
 
 // * User Dashboard Base
-Route::get('/patient/home',[Dashboard::class,'Dash'])->middleware('auth')->name('patient.home');
+Route::get('/dashboard',[Dashboard::class,'Dash'])->middleware('auth')->name('dashboard');
 
-// Family member
-Route::get('/family/home', [FamilyMemberController::class, 'home']);
+// // Family member
+// Route::get('/family/home', [FamilyMemberController::class, 'home']);
 
 
 // Login + Logout
