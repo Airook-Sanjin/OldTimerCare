@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Pending Approvals</title>
-</head>
-<body>
+@extends('Skeletons/Header&Footer')
+@section('title','Pending Approvals')
+@section('content')
+@csrf
 
 <h1>Admin Approval Panel</h1>
 
@@ -63,5 +61,5 @@
     @endforeach
 </table>
 
-</body>
-</html>
+@endsection
+

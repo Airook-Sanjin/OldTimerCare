@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Authentication;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -9,6 +10,8 @@ class AdminApprovalController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+
         $pendingPatients = DB::table('Patient')
             ->where('is_approved', 0)
             ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
@@ -21,7 +24,7 @@ class AdminApprovalController extends Controller
             ->select('FamilyMember.FamilyMemberID', 'Users.FirstName', 'Users.LastName', 'Users.Email')
             ->get();
 
-        return view('admin.approvals', compact('pendingPatients', 'pendingFamily'));
+        return view('Users.admin.approvalPage', compact('pendingPatients', 'pendingFamily','user'));
     }
 
     public function approvePatient($id)
