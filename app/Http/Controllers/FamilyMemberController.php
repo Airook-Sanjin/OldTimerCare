@@ -29,7 +29,8 @@ class FamilyMemberController extends Controller
      * Display the specified resource.
      */
      public function home()
-    {
+    {   
+        $user = auth()->user();
         return view('Users.family.home');
     }
 
