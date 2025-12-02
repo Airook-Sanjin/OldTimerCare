@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Authentication;
 
+use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -17,40 +19,50 @@ class AuthController extends Controller
     {
         $request->validate([
             'Email' => 'required|email',
-            'Password' => 'required'
+            'Password' => 'required|string'
         ]);
 
         $credentials = [
             'Email' => $request->Email,
-            'Password' => $request->Password
+            'password' => $request->Password
         ];
 
-        $user = DB::table('Users')->where('Email', $request->Email)->first();
-        if (!$user || !Hash::check($request->Password, $user->Password)) {
-            return back()->withErrors(['Email' => 'Invalid credentials']);
-        }
 
-        // Detect role via subtype tables
+    if (!Auth::attempt($credentials)) {
+        return back()->withErrors(['Email' => 'Invalid credentials']);
+    }
+
+    // Login successful
+    $request->session()->regenerate(); //! Important for security
+    $user = Auth::user();
+
+    // return redirect()->intended('/dashboard');
+
+
+        // Detect roles
         $isEmployee = DB::table('Employee')->where('UserID', $user->UserID)->first();
         $isPatient  = DB::table('Patient')->where('UserID', $user->UserID)->first();
         $isFamily   = DB::table('FamilyMember')->where('UserID', $user->UserID)->first();
 
         if ($isPatient && !$isPatient->is_approved) {
+            Auth::logout();
             return back()->withErrors(['Email' => 'Your patient account is awaiting approval.']);
         }
+        
 
         if ($isFamily && !$isFamily->is_approved) {
+            Auth::logout();
             return back()->withErrors(['Email' => 'Your family member account is awaiting approval.']);
         }
+        
 
-        session(['logged_in_user' => $user->UserID]);
-
-        return redirect('/'); 
+        return redirect()->intended(route('dashboard')); 
     }
 
     public function logout() 
     {
-        session()->forget('logged_in_user');
-        return redirect('/login');
+        Auth::logout();
+        // session()->forget('logged_in_user');
+        return redirect()->route('login');
     }
 }
