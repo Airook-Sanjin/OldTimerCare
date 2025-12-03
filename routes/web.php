@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/doctor/home', [EmployeeController::class, 'doctorHome'])->name('Doctor.home');
     Route::get('/caregiver/home', [EmployeeController::class, 'caregiverHome'])->name('Caregiver.home');
 // *family & Patients
-    Route::get('/patient/home', [PatientController::class, 'index'])->name('patient.home');
+    Route::get('/patient/home', [PatientController::class, 'index'])->name('Patient.home');
     Route::get('/family/home', [FamilyMemberController::class, 'home'])->name('family.home');
 });
 // // Family member
