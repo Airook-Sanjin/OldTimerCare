@@ -13,7 +13,7 @@ class PatientController extends Controller
     public function index()
     {   
         $user = auth()->user();
-       return view('Users.Patient.home'); //
+       return view('Users.Patient.home',compact('user')); //
     }
 
     /**
