@@ -30,12 +30,39 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //* User Dashboard Base
-Route::get('/dashboard',[Dashboard::class,'Dash'])->middleware('auth')->name('dashboard');
 
-//*  group function to auth each route in here
+
+//*  group function to auth (Logged-in User ) each route in here 
 Route::middleware('auth')->group(function(){
-    Route::get('/admin/home', [EmployeeController::class, 'adminHome'])->name('Admin.home');
-    Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
+    //* This is the General Dashboard
+    Route::get('/dashboard',[Dashboard::class,'Dash'])->name('dashboard');
+
+    Route::middleware('role:Admin,Supervisor')->group(function(){
+        Route::get('/admin/home', [EmployeeController::class, 'adminHome'])->name('Admin.home');
+
+        // Registration
+        Route::get('/register/patient', [PatientRegistrationController::class, 'showForm'])->name('register.patient');
+        Route::post('/register/patient', [PatientRegistrationController::class, 'register']);
+
+        Route::get('/register/family', [FamilyRegistrationController::class, 'showForm'])->name('register.family');
+        Route::post('/register/family', [FamilyRegistrationController::class, 'register']);
+
+        // Admin approval panel
+        Route::get('/admin/approvalPage', [AdminApprovalController::class, 'index'])->name('admin.approvalPage');
+
+        // Approve actions
+        Route::post('/admin/approve/patient/{id}', [AdminApprovalController::class, 'approvePatient']);
+        Route::post('/admin/approve/family/{id}', [AdminApprovalController::class, 'approveFamily']);
+
+        // Reject actions
+        Route::post('/admin/reject/patient/{id}', [AdminApprovalController::class, 'rejectPatient']);
+        Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
+
+        Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
+
+    });
+    
+    
     Route::get('/doctor/home', [EmployeeController::class, 'doctorHome'])->name('Doctor.home');
     Route::get('/caregiver/home', [EmployeeController::class, 'caregiverHome'])->name('Caregiver.home');
 // *family & Patients
@@ -48,20 +75,4 @@ Route::middleware('auth')->group(function(){
 
 
 
-// Registration
-Route::get('/register/patient', [PatientRegistrationController::class, 'showForm'])->name('register.patient');
-Route::post('/register/patient', [PatientRegistrationController::class, 'register']);
 
-Route::get('/register/family', [FamilyRegistrationController::class, 'showForm'])->name('register.family');
-Route::post('/register/family', [FamilyRegistrationController::class, 'register']);
-
-// Admin approval panel
-Route::get('/admin/approvalPage', [AdminApprovalController::class, 'index'])->name('admin.approvalPage');
-
-// Approve actions
-Route::post('/admin/approve/patient/{id}', [AdminApprovalController::class, 'approvePatient']);
-Route::post('/admin/approve/family/{id}', [AdminApprovalController::class, 'approveFamily']);
-
-// Reject actions
-Route::post('/admin/reject/patient/{id}', [AdminApprovalController::class, 'rejectPatient']);
-Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);

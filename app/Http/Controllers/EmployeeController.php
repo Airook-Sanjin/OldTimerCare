@@ -34,6 +34,16 @@ class EmployeeController extends Controller
     }/**
      * Show the form for creating a new resource.
      */
+    public function Roster()
+     {
+        $user = auth()->user();
+        $userID= auth()->user()->UserID;
+        $isEmployee = DB::table('Employee')->where('UserID',$userID)->first();
+        return view("Users.");
+    }
+
+
+
     public function create()
     {
         //
