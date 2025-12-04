@@ -11,7 +11,7 @@ use App\Models\Role;
 class RoleMiddleware
 {
     
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
         if(!$user){
@@ -23,7 +23,10 @@ class RoleMiddleware
         }
         $userRole = Role::where('RoleID',$employee->RoleID)->first();
 
-        if (!$userRole || strtolower($userRole->Role) !== strtolower($role)) {
+        $allowed = array_filter(array_map('trim', explode(',',implode(',',$roles))));
+        $allowed = array_map('strtolower', $allowed);
+
+        if (!$userRole || !in_array(strtolower($userRole->Role),$allowed,true)) {
             abort(403, 'Unauthorized - Invalid role');
         }
 

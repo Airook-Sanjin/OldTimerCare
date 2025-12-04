@@ -5,6 +5,8 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\FamilyMemberController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\Roster;
+
 
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Authentication\PatientRegistrationController;
@@ -59,6 +61,7 @@ Route::middleware('auth')->group(function(){
         Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
 
         Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
+        Route::get('/Users/RosterCreate',[Roster::class, 'index'])->name('RosterCreate');
 
     });
     

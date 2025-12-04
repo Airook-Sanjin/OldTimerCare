@@ -31,7 +31,7 @@
             @endif
             @if((int)($isEmployee->RoleID ?? 0)===2)
             <!--Supervisor -->
-            <li class="nav-item"><a class="nav-link" href ="{{ route('Users.RosterCreate')}}">Roster</a></li>
+            <li class="nav-item"><a class="nav-link" href ="{{ route('RosterCreate')}}">Roster</a></li>
             
             @endif
             @if((int)($isEmployee->RoleID ?? 0)===3)
