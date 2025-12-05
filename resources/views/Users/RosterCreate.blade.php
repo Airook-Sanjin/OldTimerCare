@@ -43,27 +43,18 @@
 <div class="cell">
         <div class="date-num">{{$day}}</div>
         <div class="slots">
-          <div class="slot">
-            <label>09:00</label>
+            @foreach($timeslots as $timeslot)
+            <div class="slot">
+            <label>{{$timeslot->label}}</label>
             <select>
-              <option value="">— Assign —</option>
-              <option>Alice</option>
-              <option>Bob</option>
-              <option>Charlie</option>
-              <option>Dana</option>
+                <option value="">— Assign —</option>
+                @foreach($employees as $employee)
+                    <option>{{$employee->FirstName}}</option>
+                @endforeach
             </select>
           </div>
-          <div class="slot">
-            <label>13:00</label>
-            <select>
-              <option value="">— Assign —</option>
-              <option>Alice</option>
-              <option>Bob</option>
-              <option>Charlie</option>
-              <option>Dana</option>
-            </select>
-          </div>
-</div>
+            @endforeach
+    </div>
 </div>
     @endfor
 

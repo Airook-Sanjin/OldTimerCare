@@ -18,8 +18,12 @@ class Roster extends Controller
     
     public function index(Request $request){
         // dd($request->month, gettype($request->month));
-        $employees=DB::table('Employee') ->get();
-        $timeslots = DB::table('Timeslots') ->get();
+        $excludeIDs=[1,2];
+        $employeeIDs=DB::table('Employee')->wherenotin("roleID",$excludeIDs)->pluck("UserID");
+        $employees=DB::table('Users')->wherein("UserID",$employeeIDs)->get();
+        
+
+        $timeslots = DB::table('Timeslots')->orderBy('start_time')->get();
 
         $monthInp= trim($request->month ?? '');
         $monthInp= preg_replace('/[^\d-]/', '', $monthInp);
