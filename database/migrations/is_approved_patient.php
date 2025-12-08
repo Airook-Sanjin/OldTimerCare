@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('Patient', function (Blueprint $table) {
-            $table->boolean('is_approved')->default(false)->after('CaregiverID');
+        Schema::table('Patient', function (Blueprint $table) {//default(false) before i changed it
+            $table->boolean('is_approved')->default(true)->after('CaregiverID');
         });
     }
 
