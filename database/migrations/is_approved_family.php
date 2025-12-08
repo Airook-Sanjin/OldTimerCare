@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('FamilyMember', function (Blueprint $table) {
-            $table->boolean('is_approved')->default(false)->after('Relationship');
+            $table->boolean('is_approved')->default(false)->after('Relationship');;
         });
     }
 

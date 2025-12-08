@@ -82,3 +82,20 @@ Route::middleware('auth')->group(function(){
 
 
 
+Route::get('/register/family', [FamilyRegistrationController::class, 'showForm'])->name('register.family');
+Route::post('/register/family', [FamilyRegistrationController::class, 'register']);
+
+// Admin approval panel
+Route::get('/admin/approvalPage', [AdminApprovalController::class, 'index'])->name('admin.approvalPage');
+
+// Approve actions
+Route::post('/admin/approve/patient/{id}', [AdminApprovalController::class, 'approvePatient']);
+Route::post('/admin/approve/family/{id}', [AdminApprovalController::class, 'approveFamily']);
+
+// Reject actions
+Route::post('/admin/reject/patient/{id}', [AdminApprovalController::class, 'rejectPatient']);
+Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
+
+// doctor making appointment
+Route::post('/doctor/appointments/create', [EmployeeController::class, 'createAppointment'])
+    ->name('doctor.appointments.create');

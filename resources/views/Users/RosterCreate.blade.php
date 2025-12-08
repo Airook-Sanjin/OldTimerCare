@@ -68,7 +68,7 @@
                                     @endforeach
                                 </ul>       
                         </div>
-                                @endforeach
+                    @endforeach
                 </div>
             </div>       
         @endfor
@@ -78,10 +78,13 @@
             <div id="side-panel" class="side-panel">
                 <button id="close-panel">&times;</button>
                 <h3 id="panel-date"></h3>
+                <h4>Who is Working Today</h4>
                 <div id="working-today" class="working-box"></div>
+                <h3>Assign</h3>
                 <form id="assign-form" action="{{ route('roster.assign') }}" method="POST">
                     @csrf
                     <input type="hidden" name="date" id="form-date">
+
                     <div id="timeslot-selects">
                         <!-- Timeslot dropdowns will be injected here -->
                     </div>
