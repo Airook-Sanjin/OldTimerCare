@@ -1,7 +1,7 @@
 <?php
 //* This is where we will handle Doctor's, Caregiver 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -15,10 +15,31 @@ class EmployeeController extends Controller
         $user = auth()->user();
         return view('Users.Supervisor.home',compact('user'));
     }
-    public function doctorhome(){
+    
+    // block of code below allows for the us to show the patients the doctor has
+   public function doctorhome(){
         $user = auth()->user();
-        return view('Users.Doctor.home',compact('user'));
+
+        // 1. Get the doctor's Employee record
+        $doctor = DB::table('Employee')->where('UserID', $user->UserID)->first();
+
+        // 2. Get all patients assigned to this doctor
+        $patients = DB::table('Patient')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->where('Patient.DoctorID', $doctor->EmployeeID)
+            ->select(
+                'Patient.PatientID',
+                'Users.FirstName',
+                'Users.LastName',
+                'Users.ProfileImage',
+                'Patient.Total'
+            )
+            ->get();
+
+        // 3. Return the view with BOTH variables
+        return view('Users.Doctor.home', compact('user', 'patients'));
     }
+
     public function caregiverhome(){
         $user = auth()->user();
         return view('Users.Caregiver.home',compact('user'));

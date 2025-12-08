@@ -26,9 +26,7 @@
         </div>
     </div>
     <div class="Column -right">
-        @yield('Right-Column')
-        {{-- <div class="pfp"></div> --}}
-        
+        @yield('Right-Column')        
     </div>
 </div>
 

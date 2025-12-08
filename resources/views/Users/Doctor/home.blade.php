@@ -66,12 +66,20 @@
         </div>
     @endsection
 
-    @section('Right-Column')
-        <p>Right</p>
-        <img src="{{ $user->ProfileImage }}" alt="Profile Picture" class="pfp">
-        <p>
-            Dr. John dough
-        </p>
-    @endsection
+    {{-- Section below shows the patient of the doctor  --}}
+  @section('Right-Column')
+    <h3>Patients</h3>
+    @foreach ($patients as $patient)
+        <div class="pfp">
+            <img src="{{ $patient->ProfileImage }}" alt="Profile Picture" class="pfp">
+        </div>
+
+        <p>{{ $patient->FirstName }} {{ $patient->LastName }}</p>
+        <p>Total Due: ${{ $patient->Total }}</p>
+        <hr>
+    @endforeach
+@endsection
+
+
 
 
