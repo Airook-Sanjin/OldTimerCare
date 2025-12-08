@@ -25,6 +25,12 @@ class Users extends Authenticatable
     {
         return $this->Password;
     }
+
+
+    public function Employee()
+{
+    return $this->hasOne(\App\Models\Employee::class, 'UserID', 'UserID');
+}
     // public $timestamps = true;
     // public function Employee()
     // {

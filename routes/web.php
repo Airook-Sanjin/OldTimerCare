@@ -24,34 +24,23 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-Route::get('/rehash', function () {
-    $users = \App\Models\Users::all();
-
-    foreach ($users as $user) {
-        // Directly hash the current plaintext password
-        $user->Password = $user->Password;
-        $user->save();
-    }
-
-    return "All passwords rehashed successfully.";
-});
-
 // Login + Logout
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// * User Dashboard Base
+//* User Dashboard Base
 Route::get('/dashboard',[Dashboard::class,'Dash'])->middleware('auth')->name('dashboard');
 
+//*  group function to auth each route in here
 Route::middleware('auth')->group(function(){
     Route::get('/admin/home', [EmployeeController::class, 'adminHome'])->name('Admin.home');
     Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
     Route::get('/doctor/home', [EmployeeController::class, 'doctorHome'])->name('Doctor.home');
     Route::get('/caregiver/home', [EmployeeController::class, 'caregiverHome'])->name('Caregiver.home');
 // *family & Patients
-    Route::get('/patient/home', [PatientController::class, 'index'])->name('patient.home');
-    Route::get('/family/home', [FamilyController::class, 'home'])->name('family.home');
+    Route::get('/patient/home', [PatientController::class, 'index'])->name('Patient.home');
+    Route::get('/family/home', [FamilyMemberController::class, 'home'])->name('family.home');
 });
 // // Family member
 // Route::get('/family/home', [FamilyMemberController::class, 'home']);
@@ -67,7 +56,7 @@ Route::get('/register/family', [FamilyRegistrationController::class, 'showForm']
 Route::post('/register/family', [FamilyRegistrationController::class, 'register']);
 
 // Admin approval panel
-Route::get('/admin/approvals', [AdminApprovalController::class, 'index'])->name('admin.approvals');
+Route::get('/admin/approvalPage', [AdminApprovalController::class, 'index'])->name('admin.approvalPage');
 
 // Approve actions
 Route::post('/admin/approve/patient/{id}', [AdminApprovalController::class, 'approvePatient']);
