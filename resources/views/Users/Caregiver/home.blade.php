@@ -7,7 +7,30 @@
 @endsection
 
     @section('Left-Column')
-        <p>LEFT</p>
+        <div class="upcoming-container">
+            <div class="upcoming-header">
+                <h3>Upcoming</h3>
+                <a href="#" class="see-all">See All</a>
+            </div>
+
+            <label class="till-label">Till</label>
+
+        @forelse ($appointments as $appointment)
+            <p class="appt-info">
+                Appointment with: {{ $appointment->PatientName ?? 'N/A' }} <br>
+
+                <fieldset class="date-fieldset">
+                    <legend>Appointment Date</legend>
+                    <div class="date-wrapper">
+                        <input type="date"
+                            value="{{ \Carbon\Carbon::parse($appointment->Date)->format('Y-m-d') }}">
+                    </div>
+                </fieldset>
+            </p>
+        @empty
+            <p class="appt-info">No upcoming appointments.</p>
+        @endforelse
+        </div>
     @endsection
 
     @section('Middle-Top')
@@ -67,7 +90,16 @@
     @endsection
 
     @section('Right-Column')
-        <p>Right</p>
+        <h3>Patients</h3>
+        @foreach ($patients as $patient)
+            <div class="pfp">
+                <img src="{{ $patient->ProfileImage }}" alt="Profile Picture" class="pfp">
+            </div>
+
+            <p>{{ $patient->FirstName }} {{ $patient->LastName }}</p>
+            {{-- <p>Total Due: ${{ $patient->Total }}</p> --}}
+            <hr>
+        @endforeach
     @endsection
 
 
