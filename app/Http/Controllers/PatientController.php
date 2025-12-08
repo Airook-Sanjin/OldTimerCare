@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 
@@ -10,10 +10,51 @@ class PatientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {   
-    $user = auth()->user();
-       return view('Users.family.home'); //
+    public function index(){   
+        $user = auth()->user();
+
+        $patient = DB::table('Patient')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->where('Patient.UserID', $user->UserID)
+            ->select(
+                'Patient.*',
+                'Users.FirstName',
+                'Users.LastName',
+                'Users.ProfileImage'
+            )
+            ->first();
+
+        $caregivers = DB::table('Employee')
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->join('Patient', 'Patient.CaregiverID', '=', 'Employee.EmployeeID')
+            ->where('Patient.PatientID', $patient->PatientID)
+            ->select(
+                'Employee.EmployeeID',
+                'Users.ProfileImage',
+                DB::raw("Users.FirstName || ' ' || Users.LastName AS CaregiverName")
+            )
+            ->get();
+
+        $c = 0;
+        $appointment = 0;
+
+        // Get all upcoming appointments for this caregiver (example)
+        $appointments = DB::table('Appointments')
+            ->join('Patient', 'Patient.PatientID', '=', 'Appointments.PatientID')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->where('Appointments.PatientID', $patient->PatientID) 
+            ->whereDate('Appointments.Date', '>', now()->toDateString())
+            ->orderBy('Appointments.Date', 'asc')
+            ->select(
+                'Appointments.Date',
+                'Users.ProfileImage',
+                DB::raw("Users.FirstName || ' ' || Users.LastName AS PatientName")
+            )
+            ->get();
+
+
+
+        return view('Users.patient.home', compact('user','patient','appointments','caregivers'));
     }
 
     /**

@@ -76,3 +76,7 @@ Route::post('/admin/approve/family/{id}', [AdminApprovalController::class, 'appr
 // Reject actions
 Route::post('/admin/reject/patient/{id}', [AdminApprovalController::class, 'rejectPatient']);
 Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
+
+// doctor making appointment
+Route::post('/doctor/appointments/create', [EmployeeController::class, 'createAppointment'])
+    ->name('doctor.appointments.create');
