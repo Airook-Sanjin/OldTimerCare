@@ -63,6 +63,9 @@ Route::middleware('auth')->group(function(){
         Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
         Route::get('/Users/RosterCreate',[Roster::class, 'index'])->name('RosterCreate');
 
+
+        Route::post('/roster/assign', [Roster::class, 'assign'])->name('roster.assign');
+
     });
     
     
