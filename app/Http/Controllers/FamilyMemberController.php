@@ -31,7 +31,7 @@ class FamilyMemberController extends Controller
      public function home()
     {   
         $user = auth()->user();
-        return view('Users.family.home');
+        return view('Users.family.home',compact('user'));
     }
 
     /**

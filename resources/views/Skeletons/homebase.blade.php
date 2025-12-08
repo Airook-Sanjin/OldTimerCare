@@ -14,21 +14,22 @@
     </h1>
 </div>
 <div class="Dashboard">
-<div class="Column -left">
-    @yield('Left-Column')
-</div>
-<div class="Middle-dash">
-    <div class="Middle -top">
-        @yield('Middle-Top') </div>
-
-    <div class="Middle -bottom">
-        @yield('Middle-Bottom')   
+    <div class="Column -left">
+        @yield('Left-Column')
     </div>
-</div>
-<div class="Column -right">
-    @yield('Right-Column')
-</div>
+    <div class="Middle-dash">
+        <div class="Middle -top">
+            @yield('Middle-Top') </div>
 
+        <div class="Middle -bottom">
+            @yield('Middle-Bottom')   
+        </div>
+    </div>
+    <div class="Column -right">
+        @yield('Right-Column')
+        {{-- <div class="pfp"></div> --}}
+        
+    </div>
 </div>
 
 @endsection

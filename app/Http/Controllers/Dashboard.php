@@ -39,7 +39,7 @@ class Dashboard extends Controller
             }
             return view('dashboard',compact('user'));}
         if($isPatient){
-            return redirect()->route('patient.home');
+            return redirect()->route('Patient.home');
         }
         if($isFamily){
            return redirect()->route('family.home'); 

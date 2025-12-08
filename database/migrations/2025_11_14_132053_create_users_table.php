@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('Phone', 15)->nullable();
             $table->string('Address', 100)->nullable();
             $table->date('DateOfBirth')->nullable();
+            $table->text('ProfileImage')->nullable(false); // -> nullable(false) == NOT NULL
             // $table->timestamps(); this is what adds the 'created' and updated at
         });
     }
@@ -29,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::statement('PRAGMA foreign_keys=OFF');
         Schema::dropIfExists('Users');
+        DB::statement('PRAGMA foreign_keys=ON');
+        
     }
 };

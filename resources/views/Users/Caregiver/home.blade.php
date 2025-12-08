@@ -12,7 +12,7 @@
 
     @section('Middle-Top')
         <div class="container-div">
-            <h2 class="container-title">Daily Checklist</h2>
+            <h2 class="container-title">Caregiver Daily Checklist</h2>
             <div class="container-checklist">
                 <ul>
                     <li class="box"> 

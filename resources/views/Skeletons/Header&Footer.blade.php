@@ -15,13 +15,46 @@
         @yield('styles')
     </head>
     <div class ="nav">
-            <a id="BusName"class="navbar-brand" href="/">Lancaster Oaks Residence</a>
+        
+            <a id="BusName"class="navbar-brand" href="{{ route('dashboard') }}"> <img id="Logo" src="{{asset('images/Lancaster_logo.png') }}" alt="Lancaster Oaks Residential"></a> 
             <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link">Home</a></li>
-            <li class="nav-item"><a class="nav-link">Appointment</a></li>
+            @auth
+            
+            
+            
+            @if(isset($isEmployee))
+            <li class="nav-item"><a class="nav-link" >Schedule</a></li>
+            @if((int)($isEmployee->RoleID ?? 0)===1)
+            <!-- Admin -->
+             <li class="nav-item"><a class="nav-link" href ="{{ route('admin.approvalPage')}}">Approvals</a></li>
+             <li class="nav-item"><a class="nav-link" href ="{{ route('Users.RosterCreate')}}">Roster</a></li>
+            @endif
+            @if((int)($isEmployee->RoleID ?? 0)===2)
+            <!--Supervisor -->
+            <li class="nav-item"><a class="nav-link" href ="{{ route('RosterCreate')}}">Roster</a></li>
+            
+            @endif
+            @if((int)($isEmployee->RoleID ?? 0)===3)
+            <!-- Doctor -->
+             
+            @endif
+            @if((int)($isEmployee->RoleID ?? 0)===4)
+            <!-- Caregiver -->
+             
+            @endif
+            @endif
+            <li class="nav-item">
+                <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                    <button type="submit" class="nav-link btn btn-link">Logout</button>
+                </form>
+            </li>
+            
             </ul>
+            @endauth
     </div>
     <body class="Main">
         @yield('content')
     </body>
+    @yield('scripts')
 </html>
