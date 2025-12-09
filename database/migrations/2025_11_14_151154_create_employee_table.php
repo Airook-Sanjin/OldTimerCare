@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->foreign('UserID')->references('UserID')->on('Users');
             $table->foreign('RoleID')->references('RoleID')->on('Role');
+            
         });
     }
 
