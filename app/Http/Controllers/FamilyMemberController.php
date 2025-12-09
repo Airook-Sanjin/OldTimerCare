@@ -28,52 +28,90 @@ class FamilyMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function home(){   
-        $user = auth()->user();
+    public function home()
+{   
+    $user = auth()->user();
 
-        $familymember = DB::table('FamilyMember')
-            ->where('UserID', $user->UserID)
-            ->first();
+    $familymember = DB::table('FamilyMember')
+        ->where('UserID', $user->UserID)
+        ->first();
 
+    // Get the patient assigned to this family member
+    $patient = DB::table('Patient')
+        ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+        ->where('Patient.PatientID', $familymember->PatientID)
+        ->select(
+            'Patient.*',
+            'Users.ProfileImage',
+            DB::raw("Users.FirstName || ' ' || Users.LastName AS PatientName")
+        )
+        ->first();
 
-        $patient = DB::table('Patient')
-            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
-            ->where('Patient.PatientID', $familymember->PatientID)
-            ->select(
-                'Patient.*',
-                'Users.FirstName',
-                'Users.LastName',
-                'Users.ProfileImage'
-            )
-            ->first();
+    // Caregivers for this patient
+    $caregivers = DB::table('Employee')
+        ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+        ->join('Patient', 'Patient.CaregiverID', '=', 'Employee.EmployeeID')
+        ->where('Patient.PatientID', $familymember->PatientID)
+        ->select(
+            'Employee.EmployeeID',
+            'Users.ProfileImage',
+            DB::raw("Users.FirstName || ' ' || Users.LastName AS CaregiverName")
+        )
+        ->get();
 
-        $caregivers = DB::table('Employee')
-            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
-            ->join('Patient', 'Patient.CaregiverID', '=', 'Employee.EmployeeID')
-            ->where('Patient.PatientID', $familymember->PatientID)
-            ->select(
-                'Employee.EmployeeID',
-                'Users.ProfileImage',
-                DB::raw("Users.FirstName || ' ' || Users.LastName AS CaregiverName")
-            )
-            ->get();
+    // Upcoming appointments
+    $appointments = DB::table('Appointments')
+        ->join('Patient', 'Patient.PatientID', '=', 'Appointments.PatientID')
+        ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+        ->where('Appointments.PatientID', $familymember->PatientID)
+        ->where('Appointments.Date', '>', now())
+        ->orderBy('Appointments.Date', 'asc')
+        ->select(
+            'Appointments.Date',
+            'Appointments.Notes',
+            'Users.ProfileImage',
+            DB::raw("Users.FirstName || ' ' || Users.LastName AS PatientName")
+        )
+        ->get();
 
-        $appointments = DB::table('Appointments')
-            ->join('Patient', 'Patient.PatientID', '=', 'Appointments.PatientID')
-            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
-            ->where('Appointments.PatientID', $familymember->PatientID)
-            ->whereDate('Appointments.Date', '>', now()->toDateString()) // future only
-            ->orderBy('Appointments.Date', 'asc')
-            ->select(
-                'Appointments.Date',
-                'Appointments.Notes',
-                'Users.ProfileImage',
-                DB::raw("Users.FirstName || ' ' || Users.LastName AS PatientName")
-            )
-            ->get();
+    // Load HomePageID
+    $homepage = DB::table('HomePage')
+        ->where('PatientID', $familymember->PatientID)
+        ->first();
 
-        return view('Users.family.home', compact('user','familymember','patient','caregivers','appointments'));
+    // If homepage doesn't exist -> empty checklists
+    if (!$homepage) {
+        return view('Users.family.home', compact(
+            'user','familymember','patient','caregivers','appointments'
+        ))->with([
+            'meals' => [],
+            'meds' => []
+        ]);
     }
+
+    // NEW: Load Meals
+    $meals = DB::table('MealSchedule')
+        ->where('HomePageID', $homepage->HomePageID)
+        ->orderBy('MealID')
+        ->get();
+
+    // NEW: Load Medications
+    $meds = DB::table('MedicationSchedule')
+        ->where('HomePageID', $homepage->HomePageID)
+        ->orderBy('MedID')
+        ->get();
+
+    return view('Users.family.home', compact(
+        'user',
+        'familymember',
+        'patient',
+        'caregivers',
+        'appointments',
+        'meals',
+        'meds'
+    ));
+}
+
 
 
     /**

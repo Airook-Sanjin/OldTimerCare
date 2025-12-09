@@ -15,7 +15,7 @@
 
             <label class="till-label">Till</label>
 
-        @forelse ($appointments as $appointment)
+          @forelse ($appointments as $appointment)
             <p class="appt-info">
                 Appointment with: {{ $appointment->PatientName ?? 'N/A' }} <br>
 
@@ -35,59 +35,69 @@
 
     @section('Middle-Top')
         <div class="container-div">
-            <h2 class="container-title">Caregiver Daily Checklist</h2>
-            <div class="container-checklist">
-                <ul>
-                    <li class="box"> 
-                        <div>
-                            <span>Breakfast</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                    <li class="box"> 
-                        <div>
-                            <span>Lunch</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                    <li class="box"> 
-                        <div>
-                            <span>Dinner</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                </ul>
-            </div>
+            <h2 class="container-title">Daily Checklist</h2>
+
+            <form action="{{ route('meals.update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="patient_id" value="{{ $patient->PatientID }}">
+
+                <div class="container-checklist">
+                    <ul>
+
+                        @foreach ($meals as $meal)
+                        <li class="box">
+                            <div>
+                                <span>{{ $meal->MealType }}</span>
+                                <input type="checkbox"
+                                    name="meals[{{ $meal->MealID }}]"
+                                    {{ $meal->Taken ? 'checked' : '' }}>
+                            </div>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+
+                <button type="submit" class="update-btn">Update</button>
+
+            </form>
+
         </div>
     @endsection
 
+
     @section('Middle-Bottom')
         <div class="container-div">
-            <h2 class="container-title">Medicine</h2>
-            <div class="container-checklist">
-                <ul>
-                    <li class="box"> 
-                        <div>
-                            <span>Breakfast</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                    <li class="box"> 
-                        <div>
-                            <span>Lunch</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                    <li class="box"> 
-                        <div>
-                            <span>Dinner</span>
-                            <input type="checkbox">
-                        </div>                       
-                    </li>
-                </ul>
-            </div>
+                <h2 class="container-title">Medicine</h2>
+
+            <form action="{{ route('meds.update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="patient_id" value="{{ $patient->PatientID }}">
+
+                <div class="container-checklist">
+                    <ul>
+
+                        @foreach ($meds as $med)
+                        <li class="box">
+                            <div>
+                                <span>{{ $med->TimeOfDay }}</span>
+                                <input type="checkbox"
+                                    name="meds[{{ $med->MedID }}]"
+                                    {{ $med->Taken ? 'checked' : '' }}>
+                            </div>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+
+                <button type="submit" class="update-btn">Update</button>
+
+            </form>
+
         </div>
     @endsection
+
 
     @section('Right-Column')
         <h3>Patients</h3>
@@ -97,7 +107,6 @@
             </div>
 
             <p>{{ $patient->FirstName }} {{ $patient->LastName }}</p>
-            {{-- <p>Total Due: ${{ $patient->Total }}</p> --}}
             <hr>
         @endforeach
     @endsection
