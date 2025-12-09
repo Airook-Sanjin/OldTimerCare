@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function(){
         Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
 
         Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
-        Route::get('/Users/RosterCreate',[Roster::class, 'RosterCreate'])->name('RosterCreate');
+        Route::get('/Users/Rostercreate',[Roster::class, 'Rostercreate'])->name('Rostercreate');
 
 
         Route::post('/roster/assignEmployee', [Roster::class, 'assignEmployee'])->name('roster.assignEmployee');

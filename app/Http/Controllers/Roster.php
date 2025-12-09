@@ -18,7 +18,7 @@ class Roster extends Controller
         $this->middleware('auth');
     }
     
-    public function RosterCreate(Request $request){
+    public function Rostercreate(Request $request){
         // dd($request->month, gettype($request->month));
         $excludeIDs=[1];
         $employees = DB::table('Employee')
@@ -136,14 +136,14 @@ class Roster extends Controller
 
         $assignments = $request->input('assignEmployee');
         $date= $request->input('date');
-        // dd($assignments,$date);
+        // dd($date);
         foreach($assignments as $role => $RoleAssignments){
             foreach ($RoleAssignments as $timeslotId => $employeeId) {
             if ($employeeId) {
                 EmployeeSchedules::create([
                     'TimeslotId' => $timeslotId,
                     'EmployeeID' => $employeeId,
-                    'date' => $date, // or a specific date from form
+                    'Date' => $date, // or a specific date from form
                     ]);
                 }
             }
@@ -156,8 +156,8 @@ class Roster extends Controller
 
     public function assignPatient(Request $request){
         $assignments = $request->input('assignPatient',[]);
-        $date=$request->input('date');
-        // dd($assignments,$date);
+        $date=$request->input('Patientdate');
+        // dd($date);
         foreach($assignments as $timeslotID => $patientAssignments){
             foreach($patientAssignments as $CaregiverID => $PatientID){
                 if($PatientID){
