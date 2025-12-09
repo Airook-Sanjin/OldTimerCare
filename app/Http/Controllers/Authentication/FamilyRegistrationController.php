@@ -29,6 +29,7 @@ class FamilyRegistrationController extends Controller
             'Phone'       => 'nullable',
             'Address'     => 'nullable',
             'DateOfBirth' => 'nullable|date',
+            'ProfileImage'  => 'nullable|url',
             'PatientID'   => 'required',
             'Relationship'=> 'required'
         ]);
@@ -41,8 +42,9 @@ class FamilyRegistrationController extends Controller
             'Phone'       => $request->Phone,
             'Address'     => $request->Address,
             'DateOfBirth' => $request->DateOfBirth,
-            'created_at'  => now(),
-            'updated_at'  => now()
+            'ProfileImage'=> $request->ProfileImage ?? 'default.png',
+            //'created_at'  => now(),
+            //'updated_at'  => now()
         ], 'UserID');
 
         DB::table('FamilyMember')->insert([

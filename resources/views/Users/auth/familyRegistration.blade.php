@@ -41,6 +41,9 @@
     <label>Date of Birth:</label>
     <input type="date" name="DateOfBirth"><br><br>
 
+    <label>ProfileImage:</label>
+    <input type="text" name="ProfileImage"><br><br>
+
     <label>Related Patient:</label>
     <select name="PatientID" required>
         @foreach ($patients as $p)
