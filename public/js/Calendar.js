@@ -117,7 +117,7 @@ cells.forEach(cell => {
         SupervisorTimeslotContainer.innerHTML = '<h4>Supervisor</h4>';
 
         let PatientTimeslotContainer = document.getElementById('Patient-timeslot-selects');
-            PatientTimeslotContainer.innerHTML = '<h5>Assign a Patient to a Caregiver</h5>';
+            PatientTimeslotContainer.innerHTML = '';
         
         
 
@@ -142,7 +142,7 @@ cells.forEach(cell => {
                         <p class="muted">No caregivers scheduled for this shift.</p>
                     </div>
                     `;
-                    return;
+                    // return;
                 }
                 let slotSection = `<div class="slot"><h6>${slot.label}</h6>`;
                 scheduledForSlot.forEach(s=>{

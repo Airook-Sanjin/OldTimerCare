@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function(){
         Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejectFamily']);
 
         Route::get('/supervisor/home', [EmployeeController::class, 'supervisorHome'])->name('Supervisor.home');
-        Route::get('/Users/RosterCreate',[Roster::class, 'index'])->name('RosterCreate');
+        Route::get('/Users/RosterCreate',[Roster::class, 'RosterCreate'])->name('RosterCreate');
 
 
         Route::post('/roster/assignEmployee', [Roster::class, 'assignEmployee'])->name('roster.assignEmployee');
@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function(){
 
     });
     
-    
+    Route::get('/Users/RosterCreate',[Roster::class, 'CalendarView'])->name('CalendarView');
     Route::get('/doctor/home', [EmployeeController::class, 'doctorHome'])->name('Doctor.home');
     Route::get('/caregiver/home', [EmployeeController::class, 'caregiverHome'])->name('Caregiver.home');
 // *family & Patients

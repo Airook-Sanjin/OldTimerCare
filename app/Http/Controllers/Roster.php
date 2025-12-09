@@ -18,48 +18,48 @@ class Roster extends Controller
         $this->middleware('auth');
     }
     
-    public function index(Request $request){
+    public function RosterCreate(Request $request){
         // dd($request->month, gettype($request->month));
         $excludeIDs=[1];
         $employees = DB::table('Employee')
-    ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
-    ->whereNotIn('Employee.RoleID', $excludeIDs)
-    ->select(
-        'Employee.EmployeeID',
-        'Employee.RoleID',
-        'Users.UserID',
-        'Users.FirstName',
-        'Users.LastName'
-    )
-    ->get();
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->whereNotIn('Employee.RoleID', $excludeIDs)
+            ->select(
+                'Employee.EmployeeID',
+                'Employee.RoleID',
+                'Users.UserID',
+                'Users.FirstName',
+                'Users.LastName'
+            )
+            ->get();
 
-    $employeeRoles = DB::table('Employee')
-    ->join('Role', 'Role.RoleID', '=', 'Employee.RoleID')
-    ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
-    ->select('Employee.EmployeeID', 'Users.FirstName', 'Role.Role')
-    ->get();
+        $employeeRoles = DB::table('Employee')
+            ->join('Role', 'Role.RoleID', '=', 'Employee.RoleID')
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->select('Employee.EmployeeID', 'Users.FirstName', 'Role.Role')
+            ->get();
 
-    $patients = DB::table('Patient')
-    ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
-    ->join('EmployeeSchedules','Patient.PatientID','=','EmployeeSchedules.PatientID')
-    ->select('Patient.PatientID', 'Users.FirstName','Patient.CaregiverID')->get();
+        $patients = DB::table('Patient')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->join('EmployeeSchedules','Patient.PatientID','=','EmployeeSchedules.PatientID')
+            ->select('Patient.PatientID', 'Users.FirstName','Patient.CaregiverID')->get();
 
-    // dd($patients);
-    $raw = DB::table('EmployeeSchedules')->get();
+        // dd($patients);
+        $raw = DB::table('EmployeeSchedules')->get();
 
-    $scheduled = [];
-    $simpleScheduled=[];
+        $scheduled = [];
+        $simpleScheduled=[];
 
-    foreach ($raw as $row) {
-        $d = date('Y-m-d', strtotime($row->Date));
-        $ts = $row->TimeslotId;
-    $scheduled[$d][$ts][] = [
-        'EmployeeID' => $row->EmployeeID,
-        'PatientID' => $row->PatientID ?? null
-    ];
-    $simpleScheduled[$d][$ts][]=$row->EmployeeID;
+        foreach ($raw as $row) {
+            $d = date('Y-m-d', strtotime($row->Date));
+            $ts = $row->TimeslotId;
+            $scheduled[$d][$ts][] = [
+            'EmployeeID' => $row->EmployeeID,
+            'PatientID' => $row->PatientID ?? null
+            ];
+            $simpleScheduled[$d][$ts][]=$row->EmployeeID;
 
-    }
+        }
         
         $timeslots = DB::table('Timeslots')->orderBy('start_time')->get();
 
@@ -76,6 +76,59 @@ class Roster extends Controller
         // dd($scheduled);
 
 
+        return view('Users.RosterCreate',compact('user','date','employees','timeslots','scheduled','simpleScheduled','employeeRoles','patients'));
+    }
+    public function CalendarView(Request $request){
+        $user= auth()->user();
+        $excludeIDs=[1];
+        $employees = DB::table('Employee')
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->whereNotIn('Employee.RoleID', $excludeIDs)
+            ->select(
+                'Employee.EmployeeID',
+                'Employee.RoleID',
+                'Users.UserID',
+                'Users.FirstName',
+                'Users.LastName'
+            )
+            ->get();
+
+        $employeeRoles = DB::table('Employee')
+            ->join('Role', 'Role.RoleID', '=', 'Employee.RoleID')
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->select('Employee.EmployeeID', 'Users.FirstName', 'Role.Role')
+            ->get();
+
+        $patients = DB::table('Patient')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->join('EmployeeSchedules','Patient.PatientID','=','EmployeeSchedules.PatientID')
+            ->select('Patient.PatientID', 'Users.FirstName','Patient.CaregiverID')->get();
+        $raw = DB::table('EmployeeSchedules')->get();
+
+        $scheduled = [];
+        $simpleScheduled=[];
+
+        foreach ($raw as $row) {
+            $d = date('Y-m-d', strtotime($row->Date));
+            $ts = $row->TimeslotId;
+            $scheduled[$d][$ts][] = [
+            'EmployeeID' => $row->EmployeeID,
+            'PatientID' => $row->PatientID ?? null
+            ];
+            $simpleScheduled[$d][$ts][]=$row->EmployeeID;
+
+        }
+        
+        $timeslots = DB::table('Timeslots')->orderBy('start_time')->get();
+
+        $monthInp= trim($request->month ?? '');
+        $monthInp= preg_replace('/[^\d-]/', '', $monthInp);
+
+        if(preg_match('/^\d{4}-\d{2}$/',$monthInp)){
+            $date = Carbon::createFromFormat('Y-m-d', $monthInp . '-01')->startOfMonth();
+        }else{
+            $date = Carbon::now()->startOfMonth();
+        }
         return view('Users.RosterCreate',compact('user','date','employees','timeslots','scheduled','simpleScheduled','employeeRoles','patients'));
     }
     public function assignEmployee(Request $request){
@@ -97,7 +150,7 @@ class Roster extends Controller
         }
     
 
-    return redirect()->back()->with('success', 'Assignments saved!');
+        return redirect()->back()->with('success', 'Assignments saved!');
 
     }
 
@@ -124,6 +177,7 @@ class Roster extends Controller
 
         return redirect()->back()->with('success', 'Patient Assignments saved!');
     }
+
     
 }
 

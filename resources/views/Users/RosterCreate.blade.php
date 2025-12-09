@@ -7,7 +7,11 @@
 
 <div class="wrap">
     <header>
-      <h1>Quick Employee Roster</h1>
+        @if(isset($isEmployee))
+      <h1>Employee Schedule</h1>
+      @else
+      <h1>Schedule</h1>
+      @endif
       <div class="controls">
         <a class="btn" href="?month={{ $date->copy()->subMonth()->format('Y-m') }}">< Prev</a>
         <div class="month">
@@ -50,7 +54,7 @@
 
                             @php
                                 $dateString = $date->format('Y-m-') . str_pad($day, 2, '0', STR_PAD_LEFT);
-                                $alreadyAssigned = $scheduled[$dateString][$timeslot->TimeslotId] ?? [];
+                                $alreadyAssigned = $simpleScheduled[$dateString][$timeslot->TimeslotId] ?? [];
 
                             @endphp
 
@@ -75,7 +79,7 @@
 
         <!-- BEginning of the side panel -->
             <div id="side-panel" class="side-panel">
-                <button id="close-panel">&times;</button>
+                <button class="btn" id="close-panel">&times;</button>
                 <h3 id="panel-date"></h3>
                 
                 <div id="working-today" class="working-box">
@@ -83,35 +87,39 @@
                 </div>
 
                 
+                @if(isset($isEmployee))
+                    @if((int)($isEmployee->RoleID ?? 0)===2 || (int)($isEmployee->RoleID ?? 0)===1 )
+                    <form id="assign-Employee" action="{{ route('roster.assignEmployee') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="date" id="form-date">
 
-                <form id="assign-Employee" action="{{ route('roster.assignEmployee') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="date" id="form-date">
-                    
-                    <div id="Supervisor-timeslot-selects">
-                        <!-- Timeslot dropdowns will be inserted here with the JS -->
-                    </div>
-                    
-                    <div id="Doctor-timeslot-selects">
-                        
-                        <!-- Timeslot dropdowns will be inserted here with the JS -->
-                    </div>
-                    
-                    
-                    <div id="Caregiver-timeslot-selects">
-                        <!-- Timeslot dropdowns will be inserted here with the JS -->
-                    </div>
-                    <button class="btn Submit" type="submit">Save Assignment</button>
-                </form>
-                <form id="assign-Patients" action="{{ route('roster.assignPatient') }}" method="POST">
-                    @csrf
-                     <input type="hidden" name="date" value="" id="Patient-form-date">
-                    <div id="Patient-timeslot-selects">
+                        <div id="Supervisor-timeslot-selects">
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
 
-                        <!-- Timeslot dropdowns will be inserted here with the JS -->
-                    </div>
-                <button class="btn Submit" type="submit">Save Patient Assignment</button>
-                </form>
+                        <div id="Doctor-timeslot-selects">
+
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+
+
+                        <div id="Caregiver-timeslot-selects">
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+                        <button class="btn Submit" type="submit">Save Assignment</button>
+                    </form>
+                    <form id="assign-Patients" action="{{ route('roster.assignPatient') }}" method="POST">
+                        @csrf
+                         <input type="hidden" name="date" value="" id="Patient-form-date">
+                         <h5>Assign a Patient to a Caregiver</h5>
+                        <div id="Patient-timeslot-selects">
+
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+                    <button class="btn Submit" type="submit">Save Patient Assignment</button>
+                    </form>
+                    @endif
+                @endif
             </div>
             <!-- end of panel -->
 
