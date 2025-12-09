@@ -18,6 +18,15 @@
     display: flex;
     align-items: center;
 }
+.btn {
+    background: var(--card);
+    height: max-content;
+    width: max-content;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
 #Logo{
     width: 8rem;
 }

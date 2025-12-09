@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Models\Patient;
-use App\Models\EmployeeSchedule;
+use App\Models\EmployeeSchedules;
 use Carbon\Carbon;
 
 class Roster extends Controller
@@ -20,7 +20,7 @@ class Roster extends Controller
     
     public function index(Request $request){
         // dd($request->month, gettype($request->month));
-        $excludeIDs=[1,2];
+        $excludeIDs=[1];
         $employees = DB::table('Employee')
     ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
     ->whereNotIn('Employee.RoleID', $excludeIDs)
@@ -41,14 +41,24 @@ class Roster extends Controller
 
     $patients = DB::table('Patient')
     ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
-    ->select('Patient.PatientID', 'UsersFirstName')->get();
+    ->join('EmployeeSchedules','Patient.PatientID','=','EmployeeSchedules.PatientID')
+    ->select('Patient.PatientID', 'Users.FirstName','Patient.CaregiverID')->get();
 
+    // dd($patients);
     $raw = DB::table('EmployeeSchedules')->get();
 
     $scheduled = [];
+    $simpleScheduled=[];
 
     foreach ($raw as $row) {
-    $scheduled[date('Y-m-d', strtotime($row->date))][$row->TimeslotId] = $row->EmployeeID;
+        $d = date('Y-m-d', strtotime($row->Date));
+        $ts = $row->TimeslotId;
+    $scheduled[$d][$ts][] = [
+        'EmployeeID' => $row->EmployeeID,
+        'PatientID' => $row->PatientID ?? null
+    ];
+    $simpleScheduled[$d][$ts][]=$row->EmployeeID;
+
     }
         
         $timeslots = DB::table('Timeslots')->orderBy('start_time')->get();
@@ -63,28 +73,56 @@ class Roster extends Controller
         }
         $user= auth()->user();
         // dd('monthInp', $monthInput, $monthInput . '-01');
+        // dd($scheduled);
 
 
-        return view('Users.RosterCreate',compact('user','date','employees','timeslots','scheduled','employeeRoles','patients'));
+        return view('Users.RosterCreate',compact('user','date','employees','timeslots','scheduled','simpleScheduled','employeeRoles','patients'));
     }
-    public function assign(Request $request){
+    public function assignEmployee(Request $request){
        
 
-        $assignments = $request->input('assign');
+        $assignments = $request->input('assignEmployee');
         $date= $request->input('date');
-
-        foreach ($assignments as $timeslotId => $employeeId) {
-        if ($employeeId) {
-            EmployeeSchedule::create([
-                'TimeslotId' => $timeslotId,
-                'EmployeeID' => $employeeId,
-                'date' => $date, // or a specific date from form
-            ]);
+        // dd($assignments,$date);
+        foreach($assignments as $role => $RoleAssignments){
+            foreach ($RoleAssignments as $timeslotId => $employeeId) {
+            if ($employeeId) {
+                EmployeeSchedules::create([
+                    'TimeslotId' => $timeslotId,
+                    'EmployeeID' => $employeeId,
+                    'date' => $date, // or a specific date from form
+                    ]);
+                }
+            }
         }
-    }
+    
 
     return redirect()->back()->with('success', 'Assignments saved!');
 
+    }
+
+    public function assignPatient(Request $request){
+        $assignments = $request->input('assignPatient',[]);
+        $date=$request->input('date');
+        // dd($assignments,$date);
+        foreach($assignments as $timeslotID => $patientAssignments){
+            foreach($patientAssignments as $CaregiverID => $PatientID){
+                if($PatientID){
+                    DB::table('EmployeeSchedules')->updateOrInsert(
+                        [
+                        'EmployeeID'  => $CaregiverID,
+                        'TimeslotId'  => $timeslotID,
+                        'Date'        => $date,
+                    ],
+                    [
+                        'PatientID' => $PatientID
+                    ]
+                    );
+                }
+            };
+        };
+
+        return redirect()->back()->with('success', 'Patient Assignments saved!');
     }
     
 }

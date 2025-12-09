@@ -24,13 +24,7 @@ h1 {
     gap: 8px;
     align-items: center;
 }
-.btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
+
 .month {
     background: linear-gradient(90deg, #fff, #fbfdff);
     border: 1px solid var(--border);
@@ -102,14 +96,31 @@ select {
 .side-panel {
     position: fixed;
     top: 0;
-    right: -400px; /* hidden by default */
-    width: 400px;
+    right: -700px; /* hidden by default */
+    width: 600px;
     height: 100%;
     background: #f7f7f7;
     box-shadow: -2px 0 8px rgba(0,0,0,0.2);
     padding: 20px;
     transition: right 0.3s ease;
     overflow-y: auto;
+}
+#working-today{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:5px;
+
+}
+#assign-Employee{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap:2.5rem; 
+    row-gap:1.5rem; 
+    /* flex-direction: row; */
+}
+.btn.Submit{
+    align-self: end;  /* aligns the button at the bottom of the cell */
+  justify-self: center; 
 }
 
 .side-panel.open {

@@ -64,7 +64,8 @@ Route::middleware('auth')->group(function(){
         Route::get('/Users/RosterCreate',[Roster::class, 'index'])->name('RosterCreate');
 
 
-        Route::post('/roster/assign', [Roster::class, 'assign'])->name('roster.assign');
+        Route::post('/roster/assignEmployee', [Roster::class, 'assignEmployee'])->name('roster.assignEmployee');
+        Route::post('/roster/assignPatient', [Roster::class, 'assignPatient'])->name('roster.assignPatient');
 
     });
     

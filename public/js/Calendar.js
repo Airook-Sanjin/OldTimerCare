@@ -2,7 +2,14 @@ let cells = document.querySelectorAll('.calendar .cell');
 let panel = document.getElementById('side-panel');
 let panelDate = document.getElementById('panel-date');
 let formDate = document.getElementById('form-date');
-let timeslotContainer = document.getElementById('timeslot-selects');
+let PatientformDate = document.getElementById('Patient-form-date');
+
+let CaregiverTimeslotContainer = document.getElementById('Caregiver-timeslot-selects');
+let DoctorTimeslotContainer = document.getElementById('Doctor-timeslot-selects');
+let SupervisorTimeslotContainer = document.getElementById('Supervisor-timeslot-selects');
+
+
+
 let closeBtn = document.getElementById('close-panel');
 
 
@@ -11,6 +18,7 @@ let closeBtn = document.getElementById('close-panel');
     const timeslots = JSON.parse(document.getElementById('js-timeslots').textContent);
     const employees = JSON.parse(document.getElementById('js-employees').textContent);
     const scheduled = JSON.parse(document.getElementById('js-scheduled').textContent);
+    const simpleScheduled = JSON.parse(document.getElementById('js-simpleScheduled').textContent);
 
     
 cells.forEach(cell => {
@@ -18,66 +26,70 @@ cells.forEach(cell => {
         let date = cell.dataset.date;
 
     function showWorkingForDay(date) {
-        const workingDiv = document.getElementById('working-today');
-        workingDiv.innerHTML = ""; // reset
-    
+        let workingDiv = document.getElementById('working-today');
+        workingDiv.innerHTML = ``; // reset
+        // console.log("scheduled today:", scheduled[date]);
+
         // Find all employees assigned to this date
-        const todayAssignments = scheduled[date] ?? {};
-    
+        let todayAssignments = simpleScheduled[date] ?? {};
+        console.log("Today assignments:", todayAssignments);
+
         // Group by employee
         let employeesWorking = [];
-    
-        Object.values(todayAssignments).forEach(empId => {
-            const emp = employeeRoles.find(e => e.EmployeeID == empId);
+
+        Object.values(todayAssignments).forEach(arr => {
+            arr.forEach(empId => {
+                let emp = employeeRoles.find(e => e.EmployeeID == empId);
             if (emp) employeesWorking.push(emp);
+            });
+            
         });
-        
-    
+
         // Build role sections
         const roles = ["Supervisor", "Doctor", "Caregiver"];
-    
+
         roles.forEach(role => {
             const list = employeesWorking.filter(e => e.Role === role);
-        
+            // console.log(list);
             let html = `<div class='role-group'><h4>${role}s</h4>`;
-        
+
             if (list.length === 0) {
                 html += `<p><em>No ${role.toLowerCase()} assigned.</em></p>`;
             } else {
                 html += "<ul>";
                 list.forEach(e => {
+                    console.log(list)
                     html += `<li>${e.FirstName}`;
                     // If caregiver → show patients
                     if (role === "Caregiver") {
-                        const assignedPatients = patients
-                            .filter(p => p.CaregiverID == e.EmployeeID)
-                            .map(p => {
-                                const patient = patients.find(q => q.PatientID == p.PatientID);
-                                return patient ? patient.FirstName : "Unknown";
-                            });
                         
+                        let todaysSchedule = scheduled[date]??[];
+                        let PatientID = [];
+                        Object.values(todaysSchedule).forEach(slotEntries=>{
+                            slotEntries.forEach(entry => {
+                                if (entry.EmployeeID == e.EmployeeID && entry.PatientID){
+                                    PatientID.push(entry.PatientID)
+                                }
+                            })
+                        })
+                        let assignedPatients = PatientID.map(pid =>{
+                            let p =patients.find(x=>x.PatientID==pid);
+                            return p ? p.FirstName :'Unknown';
+                        });
+
                         if (assignedPatients.length > 0) {
-                            html += ` — Patients: ${assignedPatients.join(', ')}`;
+                            html += ` — Patient: ${assignedPatients.join(', ')}`;
                         } else {
                             html += ` — No patients assigned`;
                         }
                     }
-                    if (role === "Supervisor") {
-                        const supervisorSlots = Object.entries(todayAssignments)
-                        .filter(([slotId, empId]) => empId == e.EmployeeID)
-                        .map(([slotId]) => {
-                            const slot = timeslots.find(ts => ts.TimeslotId == slotId);
-                            return slot ? slot.label : slotId;
-                        });
                     
-                        html += ` — Timeslots: ${supervisorSlots.join(', ')}`;
-            }
-        
+
                 html += "</li>";
                 });
                 html += "</ul>";
             }
-        
+
             html += "</div>";
             workingDiv.innerHTML += html;
         });
@@ -98,32 +110,145 @@ cells.forEach(cell => {
         panelDate.textContent = formatted;
 
         formDate.value = date;
+        PatientformDate.value = date;
 
+        CaregiverTimeslotContainer.innerHTML = '<h4>Caregivers</h4>';
+        DoctorTimeslotContainer.innerHTML = '<h4>Doctors</h4>';
+        SupervisorTimeslotContainer.innerHTML = '<h4>Supervisor</h4>';
 
-        // Build dropdowns for this date
-        timeslotContainer.innerHTML = ''; // clear previous
+        let PatientTimeslotContainer = document.getElementById('Patient-timeslot-selects');
+            PatientTimeslotContainer.innerHTML = '<h5>Assign a Patient to a Caregiver</h5>';
+        
+        
 
-        timeslots.forEach(slot => {
-            let assigned = scheduled[date]?.[slot.TimeslotId] ?? null;
-            let alreadyAssigned = { ...scheduled[date] };
+            timeslots.forEach(slot => {
+                
+                let assigned = simpleScheduled[date]?.[slot.TimeslotId] ?? null;
+                let alreadyAssigned = { ...simpleScheduled[date] };
+                delete alreadyAssigned[slot.TimeslotId];
+                console.log('Assigned', alreadyAssigned);
 
-            delete alreadyAssigned[slot.TimeslotId];
-
-            let selectHTML = `<div class="slot">
-                <label>${slot.label}</label>
-                <select name="assign[${slot.TimeslotId}]">
-                    <option value="">-- Select Employee --</option>`;
-
-            employees.forEach(emp => {
-                if (!Object.values(alreadyAssigned).includes(emp.EmployeeID)) {
-                    let selected = assigned == emp.EmployeeID ? 'selected' : '';
-                    selectHTML += `<option value="${emp.EmployeeID}" ${selected}>${emp.FirstName}</option>`;
+                 
+                    
+                    
+                    if(slot.TimeslotId !== 4){
+// ---------------------------------------------------------
+                
+                let scheduledForSlot = (scheduled[date] && scheduled[date][slot.TimeslotId]) ||[];
+                if(!scheduledForSlot.length){
+                    PatientTimeslotContainer += `
+                    <div class='slot'>
+                        <h6>${slot.label}</h6>
+                        <p class="muted">No caregivers scheduled for this shift.</p>
+                    </div>
+                    `;
+                    return;
                 }
+                let slotSection = `<div class="slot"><h6>${slot.label}</h6>`;
+                scheduledForSlot.forEach(s=>{
+                    let emp = employees.find(e => e.EmployeeID == s.EmployeeID);
+                    if(!emp)return;
+                    let prePatientID = s.PatientID ?? '';
+                    let options = `<option value=""> --Select Patient--</option>`;
+                    if(emp.RoleID===4){
+                    // let html = `<div class="caregiver-assign">
+                    // <label>${emp.FirstName} ${emp.LastName}</label>
+                    // <select name="assignPatient[${slot.TimeslotId}][${emp.EmployeeID}]">
+                    // <option value="">-- Select Patient --</option>`;
+
+                    patients.forEach(p=>{
+                        let sel = (String(p.PatientID) === String(prePatientID)) ? 'selected' : '';
+                        options += `<option value ="${p.PatientID}" ${sel}> ${p.FirstName}</option>`;
+                        }); 
+                        slotSection+=`
+                            <div class="caregiver-assign">
+                                <label>${emp.FirstName} ${emp.LastName}</label>
+                                <select name="assignPatient[${slot.TimeslotId}][${emp.EmployeeID}]">
+                                    ${options}
+                                </select>
+                            </div>
+                        `;
+                        }    
+                    });
+                    slotSection+=`</div>`;
+                     PatientTimeslotContainer.innerHTML+=slotSection; 
+//  ------------------------------------------------------
+
+                    let CaregiverSelectHTML = `<div class="slot">
+                        <label>${slot.label}</label>
+                        <select name="assignEmployee[caregiver][${slot.TimeslotId}]">
+                            <option value="">-- Select Caregiver --</option>`;
+                    
+                        
+                    // Caregivers Assignmentselect dropdown
+                    employees.forEach(emp => {
+                        let exclude=[1,2,3];
+                        let isExcluded = exclude.some(x => x === emp.RoleID);
+
+                        if (!isExcluded) {
+                            let selected = assigned == emp.EmployeeID ? 'selected' : '';
+                            CaregiverSelectHTML += `<option value="${emp.EmployeeID}" ${selected}>${emp.FirstName}</option>`;
+                        }
+                        });
+
+                        CaregiverSelectHTML += '</select></div>';
+                        CaregiverTimeslotContainer.innerHTML += CaregiverSelectHTML;
+
+                        
+
+                        // Patient Form
+                        
+                    }
+                if(slot.TimeslotId === 4){
+                    
+                    // console.log('WAHDFAH')
+                //    console.log('alreadyAssigned', alreadyAssigned[4]);
+
+                    let DoctorSelectHTML = `<div class="slot">
+                    <label>${slot.label}</label>
+                    <select name="assignEmployee[doctor][${slot.TimeslotId}]">
+                    <option value="">-- Select Doctor --</option>`;
+
+                    
+                       // Doctor select dropdown
+                    employees.forEach(emp => {
+                        let exclude=[1,2,4];
+                        let isExcluded = exclude.some(x => x === emp.RoleID);
+
+                        if (!isExcluded) {
+                            let selected = Array.isArray(assigned) && assigned.includes(emp.EmployeeID) ? 'selected' : '';
+                            DoctorSelectHTML += `<option value="${emp.EmployeeID}" ${selected}>${emp.FirstName}</option>`;
+                        }
+                        });
+                        DoctorSelectHTML += '</select></div>';
+                        DoctorTimeslotContainer.innerHTML += DoctorSelectHTML;
+
+                        let SupervisorSelectHTML = `<div class="slot">
+                            <label>${slot.label}</label>
+                            <select name="assignEmployee[supervisor][${slot.TimeslotId}]">
+                            <option value="">-- Select Supervisor --</option>`;
+                            
+                        employees.forEach(emp => {
+                        let exclude=[1,3,4];
+                        let isExcluded = exclude.some(x => x === emp.RoleID);
+
+                        if (!isExcluded) {
+                            let selected = Array.isArray(assigned) && assigned.includes(emp.EmployeeID) ? 'selected' : '';
+                            SupervisorSelectHTML += `<option value="${emp.EmployeeID}" ${selected}>${emp.FirstName}</option>`;
+                        }
+                        });
+                        
+                        SupervisorSelectHTML += '</select></div>';
+                        SupervisorTimeslotContainer.innerHTML += SupervisorSelectHTML;
+
+                }
+                
+                
             });
 
-            selectHTML += '</select></div>';
-            timeslotContainer.innerHTML += selectHTML;
-        });
+           
+
+            
 
     });
 });
