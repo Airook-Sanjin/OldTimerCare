@@ -13,7 +13,17 @@ class Users extends Authenticatable
     protected $primaryKey = 'UserID';
     public $timestamps = false; 
 
-    protected $fillable =['FirstName','LastName','Email','Address','Password'];
+    protected $fillable = [
+        'FirstName',
+        'LastName',
+        'Email',
+        'Address',
+        'Password',
+        'Phone',
+        'DateOfBirth',
+        'ProfileImage'
+    ];
+
     
   
 
@@ -28,9 +38,9 @@ class Users extends Authenticatable
 
 
     public function Employee()
-{
-    return $this->hasOne(\App\Models\Employee::class, 'UserID', 'UserID');
-}
+    {
+        return $this->hasOne(\App\Models\Employee::class, 'UserID', 'UserID');
+    }
     // public $timestamps = true;
     // public function Employee()
     // {

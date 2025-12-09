@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         $credentials = [
             'Email' => $request->Email,
-            'password' => $request->Password
+            'password' => $request->Password // lowercase key, uppercase input
         ];
 
 

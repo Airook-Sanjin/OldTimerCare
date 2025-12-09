@@ -69,3 +69,7 @@ Route::post('/admin/reject/family/{id}', [AdminApprovalController::class, 'rejec
 // doctor making appointment
 Route::post('/doctor/appointments/create', [EmployeeController::class, 'createAppointment'])
     ->name('doctor.appointments.create');
+
+//checklist
+Route::post('/meals/update', [EmployeeController::class, 'updateMeals'])->name('meals.update');
+Route::post('/meds/update', [EmployeeController::class, 'updateMeds'])->name('meds.update');
