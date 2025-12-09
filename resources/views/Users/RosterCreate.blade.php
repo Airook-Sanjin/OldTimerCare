@@ -7,7 +7,11 @@
 
 <div class="wrap">
     <header>
-      <h1>Quick Employee Calendar</h1>
+        @if(isset($isEmployee))
+      <h1>Employee Schedule</h1>
+      @else
+      <h1>Schedule</h1>
+      @endif
       <div class="controls">
         <a class="btn" href="?month={{ $date->copy()->subMonth()->format('Y-m') }}">< Prev</a>
         <div class="month">
@@ -50,9 +54,8 @@
 
                             @php
                                 $dateString = $date->format('Y-m-') . str_pad($day, 2, '0', STR_PAD_LEFT);
-                                $assigned = $scheduled[$dateString][$timeslot->TimeslotId] ?? null;
-                                $alreadyAssigned = $scheduled[$dateString] ?? [];
-                                unset($alreadyAssigned[$timeslot->TimeslotId]);
+                                $alreadyAssigned = $simpleScheduled[$dateString][$timeslot->TimeslotId] ?? [];
+
                             @endphp
 
                             <label>{{$timeslot->label}}</label>
@@ -60,7 +63,7 @@
                                 <ul class="TimeslotCellList">
                                     @foreach($employees as $employee)
                                         @if(in_array($employee->EmployeeID, $alreadyAssigned))
-                                            <li value="{{ $employee->EmployeeID }}">
+                                            <li >
                                                 {{ $employee->FirstName }}
                                             </li>
                                         @else
@@ -76,20 +79,47 @@
 
         <!-- BEginning of the side panel -->
             <div id="side-panel" class="side-panel">
-                <button id="close-panel">&times;</button>
+                <button class="btn" id="close-panel">&times;</button>
                 <h3 id="panel-date"></h3>
-                <h4>Who is Working Today</h4>
-                <div id="working-today" class="working-box"></div>
-                <h3>Assign</h3>
-                <form id="assign-form" action="{{ route('roster.assign') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="date" id="form-date">
+                
+                <div id="working-today" class="working-box">
+                    
+                </div>
 
-                    <div id="timeslot-selects">
-                        <!-- Timeslot dropdowns will be injected here -->
-                    </div>
-                    <button type="submit">Save Assignment</button>
-                </form>
+                
+                @if(isset($isEmployee))
+                    @if((int)($isEmployee->RoleID ?? 0)===2 || (int)($isEmployee->RoleID ?? 0)===1 )
+                    <form id="assign-Employee" action="{{ route('roster.assignEmployee') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="date" id="form-date">
+
+                        <div id="Supervisor-timeslot-selects">
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+
+                        <div id="Doctor-timeslot-selects">
+
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+
+
+                        <div id="Caregiver-timeslot-selects">
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+                        <button class="btn Submit" type="submit">Save Assignment</button>
+                    </form>
+                    <form id="assign-Patients" action="{{ route('roster.assignPatient') }}" method="POST">
+                        @csrf
+                         <input type="hidden" name="date" value="" id="Patient-form-date">
+                         <h5>Assign a Patient to a Caregiver</h5>
+                        <div id="Patient-timeslot-selects">
+
+                            <!-- Timeslot dropdowns will be inserted here with the JS -->
+                        </div>
+                    <button class="btn Submit" type="submit">Save Patient Assignment</button>
+                    </form>
+                    @endif
+                @endif
             </div>
             <!-- end of panel -->
 
@@ -111,6 +141,9 @@
 </script>
 <script type="application/json" id="js-scheduled">
     {!! json_encode($scheduled) !!}
+</script>
+<script type="application/json" id="js-simpleScheduled">
+    {!! json_encode($simpleScheduled) !!}
 </script>
 <script src="{{ asset('js/Calendar.js') }}"></script>
 @endsection

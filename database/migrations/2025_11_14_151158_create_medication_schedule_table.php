@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if(!Schema::hasTable('MedicationSchedule')){
         Schema::create('MedicationSchedule', function (Blueprint $table) {
             $table->id('MedID');
             $table->unsignedBigInteger('HomePageID');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->foreign('HomePageID')->references('HomePageID')->on('HomePage');
         });
     }
+}
 
 
     /**
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medication_schedule');
+        Schema::dropIfExists('MedicationSchedule');
     }
 };

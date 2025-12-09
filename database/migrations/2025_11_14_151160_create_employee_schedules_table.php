@@ -12,18 +12,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('EmployeeSchedule', function (Blueprint $table) {
+        if(!Schema::hasTable("EmployeeSchedules")){
+        Schema::create('EmployeeSchedules', function (Blueprint $table) {
             $table->id('EDIS');
             $table->unsignedBigInteger('EmployeeID');
+            $table->unsignedBigInteger('PatientID');
             $table->date('Date');
             $table->unsignedBigInteger('TimeslotId');
             $table->text('Notes')->nullable();
             $table->timestamps();
 
             $table->foreign('EmployeeID')->references('EmployeeID')->on('Employee');
+            $table->foreign('PatientID')->references('PatientID')->on('Patient');
             $table->foreign('TimeslotId')->references('TimeslotId')->on('Timeslots');
-});
-    }
+        });
+        }
+}
 
 
     /**
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('EmployeeSchedule');  
+        Schema::dropIfExists('EmployeeSchedules');  
     }
 };

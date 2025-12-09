@@ -12,6 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if(!Schema::hasTable('PaymentManagement')){
         Schema::create('PaymentManagement', function (Blueprint $table) {
             $table->id('PaymentID');
             $table->unsignedBigInteger('AppointmentID')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->foreign('PatientID')->references('PatientID')->on('Patient');
         });
     }
+}
 
 
     /**
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_management');
+        Schema::dropIfExists('PaymentManagement');
     }
 };

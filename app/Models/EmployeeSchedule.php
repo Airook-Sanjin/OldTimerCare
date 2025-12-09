@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeSchedule extends Model
+class EmployeeSchedules extends Model
 {
     protected $table = 'EmployeeSchedules';
     protected $primaryKey = 'ESID'; 
@@ -12,6 +12,7 @@ class EmployeeSchedule extends Model
     protected $fillable = [
         'TimeslotId',
         'EmployeeID',
-        'date',
+        'PatientID',
+        'Date',
     ];
 }

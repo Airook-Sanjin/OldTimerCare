@@ -1,5 +1,17 @@
 
+:root {
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --border: #e6e9ef;
+    --cell-min-height: 120px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+        Arial;
+}
 
+ul{ list-style-type: none;
+    padding-inline-start: 15px;}
 .nav{
     display: flex;
     flex-wrap: wrap;
@@ -17,6 +29,15 @@
 .nav-brand{
     display: flex;
     align-items: center;
+}
+.btn {
+    background: var(--card);
+    height: max-content;
+    width: max-content;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 #Logo{
     width: 8rem;
