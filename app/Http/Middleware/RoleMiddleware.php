@@ -5,18 +5,30 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Employee;
+use App\Models\Role;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        log::info("Before Role");
+        $user = $request->user();
+        if(!$user){
+            abort(403,'unauthorized');
+        }
+        $employee= Employee::where ("UserID",$user->UserID)->first();
+         if(!$employee){
+            abort(403,'User is not an employee');
+        }
+        $userRole = Role::where('RoleID',$employee->RoleID)->first();
 
+        $allowed = array_filter(array_map('trim', explode(',',implode(',',$roles))));
+        $allowed = array_map('strtolower', $allowed);
+
+        if (!$userRole || !in_array(strtolower($userRole->Role),$allowed,true)) {
+            abort(403, 'Unauthorized - Invalid role');
+        }
 
         return $next($request);
     }

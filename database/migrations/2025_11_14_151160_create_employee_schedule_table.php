@@ -10,17 +10,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('AdminsReport', function (Blueprint $table) {
-            $table->id('AdminID');
+        Schema::create('EmployeeSchedule', function (Blueprint $table) {
+            $table->id('EDIS');
             $table->unsignedBigInteger('EmployeeID');
-            $table->unsignedBigInteger('RosterID');
+            $table->date('Date');
+            $table->unsignedBigInteger('TimeslotId');
+            $table->text('Notes')->nullable();
             $table->timestamps();
 
             $table->foreign('EmployeeID')->references('EmployeeID')->on('Employee');
-            $table->foreign('RosterID')->references('RosterID')->on('Roster');
-        });
+            $table->foreign('TimeslotId')->references('TimeslotId')->on('Timeslots');
+});
     }
 
 
@@ -29,8 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('PRAGMA foreign_keys=OFF');
-        Schema::dropIfExists('AdminsReport');
-        DB::statement('PRAGMA foreign_keys=ON');
+        Schema::dropIfExists('EmployeeSchedule');  
     }
 };

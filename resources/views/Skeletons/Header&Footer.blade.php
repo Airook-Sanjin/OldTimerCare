@@ -27,9 +27,11 @@
             @if((int)($isEmployee->RoleID ?? 0)===1)
             <!-- Admin -->
              <li class="nav-item"><a class="nav-link" href ="{{ route('admin.approvalPage')}}">Approvals</a></li>
+             <li class="nav-item"><a class="nav-link" href ="{{ route('Users.RosterCreate')}}">Roster</a></li>
             @endif
             @if((int)($isEmployee->RoleID ?? 0)===2)
             <!--Supervisor -->
+            <li class="nav-item"><a class="nav-link" href ="{{ route('RosterCreate')}}">Roster</a></li>
             
             @endif
             @if((int)($isEmployee->RoleID ?? 0)===3)
@@ -54,4 +56,5 @@
     <body class="Main">
         @yield('content')
     </body>
+    @yield('scripts')
 </html>

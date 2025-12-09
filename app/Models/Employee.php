@@ -9,6 +9,8 @@ use App\Models\User;
 class Employee extends Model
 {
     use HasFactory;
+    protected $table = 'Employee';
+    protected $primaryKey = 'EmployeeID';
     protected $fillable =['EmployeeID','UserID','RoleID','HireDate'];
 
     public function User(){

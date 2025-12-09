@@ -10,17 +10,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('AdminsReport', function (Blueprint $table) {
-            $table->id('AdminID');
-            $table->unsignedBigInteger('EmployeeID');
-            $table->unsignedBigInteger('RosterID');
+        Schema::create('Timeslots', function (Blueprint $table) {
+            $table->id('TimeslotId');
+            $table->text('label');
+            $table->text('start_time');
+            $table->text('end_time');
             $table->timestamps();
-
-            $table->foreign('EmployeeID')->references('EmployeeID')->on('Employee');
-            $table->foreign('RosterID')->references('RosterID')->on('Roster');
-        });
+        }); 
     }
 
 
@@ -30,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::statement('PRAGMA foreign_keys=OFF');
-        Schema::dropIfExists('AdminsReport');
+        Schema::dropIfExists('Timeslots');
         DB::statement('PRAGMA foreign_keys=ON');
     }
 };
