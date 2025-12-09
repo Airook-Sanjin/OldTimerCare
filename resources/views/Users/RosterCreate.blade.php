@@ -110,7 +110,7 @@
                     </form>
                     <form id="assign-Patients" action="{{ route('roster.assignPatient') }}" method="POST">
                         @csrf
-                         <input type="hidden" name="date" value="" id="Patient-form-date">
+                         <input type="hidden" name="Patientdate" value="" id="Patient-form-date">
                          <h5>Assign a Patient to a Caregiver</h5>
                         <div id="Patient-timeslot-selects">
 
@@ -145,5 +145,5 @@
 <script type="application/json" id="js-simpleScheduled">
     {!! json_encode($simpleScheduled) !!}
 </script>
-<script src="{{ asset('js/Calendar.js') }}"></script>
+<script src="{{ asset('js/Calendar.js') }}" defer></script>
 @endsection

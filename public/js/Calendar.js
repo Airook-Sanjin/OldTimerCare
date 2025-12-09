@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', () => {
 let cells = document.querySelectorAll('.calendar .cell');
 let panel = document.getElementById('side-panel');
 let panelDate = document.getElementById('panel-date');
@@ -24,6 +25,8 @@ let closeBtn = document.getElementById('close-panel');
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
         let date = cell.dataset.date;
+        
+        PatientformDate.value = date;
 
     function showWorkingForDay(date) {
         let workingDiv = document.getElementById('working-today');
@@ -110,7 +113,7 @@ cells.forEach(cell => {
         panelDate.textContent = formatted;
 
         formDate.value = date;
-        PatientformDate.value = date;
+        
 
         CaregiverTimeslotContainer.innerHTML = '<h4>Caregivers</h4>';
         DoctorTimeslotContainer.innerHTML = '<h4>Doctors</h4>';
@@ -118,6 +121,7 @@ cells.forEach(cell => {
 
         let PatientTimeslotContainer = document.getElementById('Patient-timeslot-selects');
             PatientTimeslotContainer.innerHTML = '';
+            
         
         
 
@@ -136,13 +140,13 @@ cells.forEach(cell => {
                 
                 let scheduledForSlot = (scheduled[date] && scheduled[date][slot.TimeslotId]) ||[];
                 if(!scheduledForSlot.length){
-                    PatientTimeslotContainer += `
+                    PatientTimeslotContainer.innerHTML += `
                     <div class='slot'>
                         <h6>${slot.label}</h6>
                         <p class="muted">No caregivers scheduled for this shift.</p>
                     </div>
                     `;
-                    // return;
+                    
                 }
                 let slotSection = `<div class="slot"><h6>${slot.label}</h6>`;
                 scheduledForSlot.forEach(s=>{
@@ -255,4 +259,5 @@ cells.forEach(cell => {
 
 closeBtn.addEventListener('click', () => {
     panel.classList.remove('open');
+});
 });
