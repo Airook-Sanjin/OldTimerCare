@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('RoleID');
             $table->date('HireDate')->nullable();
             $table->timestamps();
+            $table->decimal('Salary', 10, 2)->nullable();
 
             $table->foreign('UserID')->references('UserID')->on('Users');
             $table->foreign('RoleID')->references('RoleID')->on('Role');

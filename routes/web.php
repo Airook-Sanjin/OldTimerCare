@@ -66,6 +66,15 @@ Route::middleware('auth')->group(function(){
 
         Route::post('/roster/assignEmployee', [Roster::class, 'assignEmployee'])->name('roster.assignEmployee');
         Route::post('/roster/assignPatient', [Roster::class, 'assignPatient'])->name('roster.assignPatient');
+        
+        Route::get('/employees', [EmployeeController::class, 'index'])
+            ->name('employees.index');
+
+        Route::post('/employees/update-salary',
+            [EmployeeController::class, 'updateSalary']
+        )->name('employees.updateSalary');
+
+        
 
     });
     
@@ -75,6 +84,7 @@ Route::middleware('auth')->group(function(){
 // *family & Patients
     Route::get('/patient/home', [PatientController::class, 'index'])->name('Patient.home');
     Route::get('/family/home', [FamilyMemberController::class, 'home'])->name('family.home');
+
 });
 // // Family member
 // Route::get('/family/home', [FamilyMemberController::class, 'home']);

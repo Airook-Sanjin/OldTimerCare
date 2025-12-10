@@ -257,6 +257,40 @@ class EmployeeController extends Controller{
 
     return back()->with('success', 'Medication checklist updated.');
 }
+    public function index()
+    {
+        // Join Employee + Users + Role tables to show full employee info
+        $employees = DB::table('Employee')
+            ->join('Users', 'Users.UserID', '=', 'Employee.UserID')
+            ->join('Role', 'Role.RoleID', '=', 'Employee.RoleID')
+            ->select(
+                'Employee.EmployeeID',
+                'Employee.Salary',
+                'Role.RoleName',
+                DB::raw("Users.FirstName || ' ' || Users.LastName AS Name")
+            )
+            ->orderBy('Employee.EmployeeID')
+            ->get();
+
+        return view('Users.Supervisor.employees', compact('employees'));
+    }
+    public function updateSalary(Request $request)
+{
+    $request->validate([
+        'employee_id' => 'required|integer',
+        'salary' => 'required|numeric|min:0',
+    ]);
+
+    DB::table('Employee')
+        ->where('EmployeeID', $request->employee_id)
+        ->update([
+            'Salary' => $request->salary,
+            'updated_at' => now(),
+        ]);
+
+    return back()->with('success', 'Salary updated successfully.');
+}
+
 
 
 
