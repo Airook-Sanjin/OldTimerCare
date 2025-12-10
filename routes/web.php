@@ -25,6 +25,19 @@ use Illuminate\Support\Facades\Hash;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    return view('lancasterOaks_frontend.index');
+})->name('home');
+Route::get('/who-We-Are', function () {
+    return view('lancasterOaks_frontend.who-we-are');
+})->name('who-we-are');
+Route::get('/our-services', function () {
+    return view('lancasterOaks_frontend.our-services');
+})->name('our-services');
+Route::get('/our-facility', function () {
+    return view('lancasterOaks_frontend.our-facility');
+})->name('our-facility');
+
 
 // Login + Logout
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
