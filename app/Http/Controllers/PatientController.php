@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+ 
     public function index(){   
         $user = auth()->user();
+// -------------gets date
+        $date = Carbon::now()->startOfMonth();
+// --------------
 
         $patient = DB::table('Patient')
             ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
@@ -54,7 +56,7 @@ class PatientController extends Controller
 
 
 
-        return view('Users.patient.home', compact('user','patient','appointments','caregivers'));
+        return view('Users.patient.home', compact('user','date','patient','appointments','caregivers'));
     }
 
     /**

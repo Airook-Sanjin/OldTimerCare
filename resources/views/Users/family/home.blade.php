@@ -10,7 +10,7 @@
         <div class="upcoming-container">
             <div class="upcoming-header">
                 <h3>Upcoming</h3>
-                <a href="#" class="see-all">See All</a>
+                
             </div>
 
             <label class="till-label">Till</label>
