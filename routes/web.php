@@ -6,7 +6,7 @@ use App\Http\Controllers\FamilyMemberController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\Roster;
-
+use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Authentication\PatientRegistrationController;
@@ -73,6 +73,16 @@ Route::middleware('auth')->group(function(){
         Route::post('/employees/update-salary',
             [EmployeeController::class, 'updateSalary']
         )->name('employees.updateSalary');
+
+    Route::get('/payments', [PaymentController::class, 'paymentPage'])
+        ->name('payment.page');
+
+    Route::post('/payments/make', [PaymentController::class, 'makePayment'])
+        ->name('payment.make');
+
+    Route::post('/payments/update-billing', [PaymentController::class, 'updateBilling'])
+        ->name('payment.updateBilling');
+            
 
         
 

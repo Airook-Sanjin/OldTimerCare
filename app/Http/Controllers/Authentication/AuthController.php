@@ -17,21 +17,21 @@ class AuthController extends Controller
 
     public function login(Request $request) 
     {
+
+
         $request->validate([
             'Email' => 'required|email',
             'Password' => 'required|string'
-        ]);
-
+                ]);
         $credentials = [
             'Email' => $request->Email,
-            'password' => $request->Password // lowercase key, uppercase input
+            'password' => $request->Password
         ];
 
 
-    if (!Auth::attempt($credentials)) {
-        return back()->withErrors(['Email' => 'Invalid credentials']);
-    }
-
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors(['Email' => 'Invalid credentials']);
+        }
     // Login successful
     $request->session()->regenerate(); //! Important for security
     $user = Auth::user();

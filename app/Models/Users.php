@@ -56,4 +56,9 @@ class Users extends Authenticatable
     // {
     //     return $this->hasOne(FamilyMember::class);
     // }
+    public function username()
+{
+    return 'Email';  // your column name
+}
+
 }

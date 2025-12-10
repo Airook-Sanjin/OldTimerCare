@@ -20,41 +20,45 @@
            
             <ul class="navbar-nav">
             @auth
-            
-            
-            
-            @if(isset($isEmployee))
-            
-            
-            @if((int)($isEmployee->RoleID ?? 0)===1)
-            <!-- Admin -->
-             <li class="nav-item"><a class="nav-link" href ="{{ route('admin.approvalPage')}}">Approvals</a></li>
-            
+        @if(isset($isEmployee))
+
+            {{-- Admin Only --}}
+            @if((int)($isEmployee->RoleID ?? 0) === 1)
+                <li class="nav-item"><a class="nav-link" href="{{ route('admin.approvalPage') }}">Approvals</a></li>
             @endif
-            @if((int)($isEmployee->RoleID ?? 0)===2)
-            <!--Supervisor -->
-            <li class="nav-item"><a class="nav-link" href ="{{ route('Rostercreate')}}" >Schedule</a></li>
-            
+
+            {{-- Admin + Supervisor Shared Links --}}
+            @if(in_array((int)($isEmployee->RoleID ?? 0), [1, 2]))
+                <li class="nav-item"><a class="nav-link" href="{{ route('Rostercreate') }}">Schedule</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('employees.index') }}">Employees</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('payment.page') }}">Payments</a></li>
+
+        @endif
+
+
+
+                @if((int)($isEmployee->RoleID ?? 0)===3)
+                    <!-- Doctor -->
+                @endif
+
+                @if((int)($isEmployee->RoleID ?? 0)===4)
+                    <!-- Caregiver -->
+                @endif
+
             @endif
-            @if((int)($isEmployee->RoleID ?? 0)===3)
-            <!-- Doctor -->
-             
-            @endif
-            @if((int)($isEmployee->RoleID ?? 0)===4)
-            <!-- Caregiver -->
-             
-            @endif
-            @endif
-            <li class="nav-item"><a class="nav-link" href ="{{ route('CalendarView')}}" >Calendar</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{{ route('CalendarView') }}">Calendar</a></li>
+
             <li class="nav-item">
                 <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                    <button type="submit" class=" btn">Logout</button>
+                    @csrf
+                    <button type="submit" class="btn">Logout</button>
                 </form>
             </li>
-            
-            </ul>
+
             @endauth
+            </ul>
+
     </div>
     <body class="Main">
         @yield('content')

@@ -1,6 +1,9 @@
-@extends('layouts.app')
+@extends('Skeletons/Header&Footer')
+
+@section('title', 'Employees')
 
 @section('content')
+
 <div class="container">
 
     <h2>Employee List</h2>
@@ -52,4 +55,5 @@
     </form>
 
 </div>
+
 @endsection

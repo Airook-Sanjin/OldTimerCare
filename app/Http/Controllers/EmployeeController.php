@@ -266,11 +266,12 @@ class EmployeeController extends Controller{
             ->select(
                 'Employee.EmployeeID',
                 'Employee.Salary',
-                'Role.RoleName',
+                'Role.Role as RoleName',
                 DB::raw("Users.FirstName || ' ' || Users.LastName AS Name")
             )
             ->orderBy('Employee.EmployeeID')
             ->get();
+
 
         return view('Users.Supervisor.employees', compact('employees'));
     }
@@ -290,7 +291,78 @@ class EmployeeController extends Controller{
 
     return back()->with('success', 'Salary updated successfully.');
 }
+public function paymentPage(Request $request)
+{
+    $patient = null;
 
+    if ($request->patient_id) {
+        $patient = DB::table('Patient')
+            ->join('Users', 'Users.UserID', '=', 'Patient.UserID')
+            ->where('Patient.PatientID', $request->patient_id)
+            ->first();
+    }
+
+    return view('Users.Supervisor.payment', compact('patient'));
+}
+public function makePayment(Request $request)
+{
+    $request->validate([
+        'patient_id' => 'required|integer',
+        'amount' => 'required|numeric|min:0.01'
+    ]);
+
+    // Add payment record
+    DB::table('PaymentManagement')->insert([
+        'PatientID' => $request->patient_id,
+        'Amount' => $request->amount,
+        'Status' => 'paid',
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+
+    // Subtract from total
+    DB::table('Patient')->where('PatientID', $request->patient_id)
+        ->decrement('Total', $request->amount);
+
+    return back()->with('success', 'Payment recorded successfully.');
+}
+
+public function updateBilling(Request $request)
+{
+    $patient = DB::table('Patient')->where('PatientID', $request->patient_id)->first();
+
+    if (!$patient) return back()->with('error', 'Patient not found.');
+
+    $today = now()->toDateString();
+    $lastUpdate = $patient->updated_at ?? $today;
+
+    // 1. Charge $10 per day
+    $days = now()->diffInDays($lastUpdate);
+    $dailyCharge = $days * 10;
+
+    // 2. $50 per appointment since last update
+    $appointments = DB::table('Appointments')
+        ->where('PatientID', $patient->PatientID)
+        ->where('created_at', '>', $lastUpdate)
+        ->count();
+
+    $appointmentCharge = $appointments * 50;
+
+    // 3. $5 per medicine/month — simplified
+    $medCharge = 5;
+
+    $totalCharge = $dailyCharge + $appointmentCharge + $medCharge;
+
+    // Update Patient total
+    DB::table('Patient')->where('PatientID', $request->patient_id)
+        ->increment('Total', $totalCharge);
+
+    // Update timestamp so it does not double-charge
+    DB::table('Patient')->where('PatientID', $request->patient_id)
+        ->update(['updated_at' => now()]);
+
+    return back()->with('success', "Billing updated. Added: \${$totalCharge}");
+}
 
 
 

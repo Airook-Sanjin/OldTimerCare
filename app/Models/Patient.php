@@ -2,18 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class Patient extends Model
 {
-    use HasFactory;
-
-    protected $fillable =['UserID','DoctorID','CaregiverID',
-                        'Total'];
-
-    public function User(){
-        return $this->belongsTo(User::class);
-}
+    protected $table = 'Patient'; // MUST match your table exactly
+    protected $primaryKey = 'PatientID';
+    public $timestamps = false; // your table has no timestamps
 }
